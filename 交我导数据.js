@@ -178,7 +178,6 @@ window.JIAOWODAO_DATA = [
   {name:"交大团委zzb",cat:"职能部门",type:"wechat",desc:"上海交通大学校团委组织部"},
   {name:"交大家园",cat:"学生组织与文化",type:"wechat",desc:"交大学生社区风采"},
   {name:"上海交通大学学生事务中心",cat:"职能部门",type:"wechat",desc:"上海交通大学学生事务中心"},
-  {name:"交大就业",cat:"招生就业",type:"wechat",desc:"上海交通大学学生就业服务和职业发展中心"},
   {name:"交我算",cat:"综合门户",type:"wechat",desc:"上海交大计算平台"},
   {name:"SJTU勤工助学部",cat:"学生组织与文化",type:"wechat",desc:"勤工助学信息"},
   {name:"上海交通大学学生体育总会",cat:"学生组织与文化",type:"wechat",desc:"上海交通大学学生体育总会"},
