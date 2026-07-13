@@ -183,5 +183,5 @@ window.JIAOWODAO_DATA = [
   {name:"SJTU勤工助学部",cat:"学生组织与文化",type:"wechat",desc:"勤工助学信息"},
   {name:"上海交通大学学生体育总会",cat:"学生组织与文化",type:"wechat",desc:"上海交通大学学生体育总会"},
   {name:"333的招协人",cat:"招生就业",type:"wechat",desc:"上海交通大学招生宣传志愿者协会"},
-  {name:"交大思思",cat:"学生组织与文化",type:"wechat",desc:"社会实践信息查询"},
+  {name:"交大国防",cat:"职能部门",type:"wechat",desc:"上海交通大学武装部官方微信"}
 ];
