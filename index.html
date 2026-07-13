@@ -24,6 +24,7 @@
     --badge-ink:#656970;
     --copy-bg:#f4fbf6;
     --copy-border:#bdd8c5;
+    --badge-wechat-bg: #e6f4e9;
   }
 
   :root[data-theme="dark"] {
@@ -40,7 +41,8 @@
     --surface-muted:#292b31;
     --badge-bg:#30333a;
     --badge-ink:#d0d3d8;
-    --green:#78d895;
+    --badge-wechat-bg: #162d1f;
+    --green: #52c41a;
     --copy-bg:#182c1f;
     --copy-border:#2d5a3a;
   }
@@ -59,7 +61,8 @@
       --surface-muted:#292b31;
       --badge-bg:#30333a;
       --badge-ink:#d0d3d8;
-      --green:#78d895;
+      --badge-wechat-bg: #162d1f;
+      --green: #52c41a;
       --copy-bg:#182c1f;
       --copy-border:#2d5a3a;
     }
@@ -348,7 +351,7 @@
     color:var(--badge-ink);
     white-space:nowrap;
   }
-  .badge.wechat{background:#e6f4e9;color:var(--green);}
+  .badge.wechat{background:var(--badge-wechat-bg);color:var(--green);}
   .card .cat{font-size:.74rem;color:var(--accent-strong);opacity:.92;}
   .card .desc{font-size:.78rem;color:var(--sub);line-height:1.5;}
   .card .link-hint{
