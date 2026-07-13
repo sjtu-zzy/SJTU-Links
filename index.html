@@ -17,6 +17,82 @@
     --green:#267843;
     --shadow:0 16px 42px rgba(34,20,24,.12);
   }
+
+  /* ====== 修复：深色模式色彩变量 ====== */
+  :root[data-theme="dark"] {
+    --page:#121214;
+    --card:#1e1e22;
+    --ink:#e3e5e9;
+    --sub:#969aa0;
+    --line:#2d3034;
+    --shadow:0 16px 42px rgba(0,0,0,.35);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root[data-theme="auto"] {
+      --page:#121214;
+      --card:#1e1e22;
+      --ink:#e3e5e9;
+      --sub:#969aa0;
+      --line:#2d3034;
+      --shadow:0 16px 42px rgba(0,0,0,.35);
+    }
+  }
+
+  /* 深色模式下输入框、分类栏、按钮的背景色适配 */
+  :root[data-theme="dark"] .search-field { background: #1e1e22; }
+  :root[data-theme="dark"] .type-tabs { background: #25272c; }
+  :root[data-theme="dark"] .type-tab.active { background: #1e1e22; }
+  :root[data-theme="dark"] .chip { background: #1e1e22; }
+  :root[data-theme="dark"] footer { background: #18181b; }
+  :root[data-theme="dark"] .copy-btn { background: #172b1e; border-color: #1e462b; }
+
+  @media (prefers-color-scheme: dark) {
+    :root[data-theme="auto"] .search-field { background: #1e1e22; }
+    :root[data-theme="auto"] .type-tabs { background: #25272c; }
+    :root[data-theme="auto"] .type-tab.active { background: #1e1e22; }
+    :root[data-theme="auto"] .chip { background: #1e1e22; }
+    :root[data-theme="auto"] footer { background: #18181b; }
+    :root[data-theme="auto"] .copy-btn { background: #172b1e; border-color: #1e462b; }
+  }
+
+  /* ====== 右上角切换按钮的样式 ====== */
+  .theme-toggle-wrap {
+    position: absolute;
+    top: 24px;
+    right: max(20px, calc((100% - 1120px) / 2 + 20px));
+    z-index: 10;
+  }
+  .theme-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 6px 30px 6px 12px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    transition: background 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 14px;
+  }
+  .theme-select:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+  .theme-select option {
+    background: #1e1e22;
+    color: #e3e5e9;
+  }
+  /* 确保浅色模式下下拉菜单选项清晰 */
+  :root[data-theme="light"] .theme-select option {
+    background: #ffffff;
+    color: #222326;
+  }
+
   *{box-sizing:border-box;}
   body{
     margin:0;
@@ -96,7 +172,7 @@
     align-items:center;
     gap:12px;
     padding:0 18px;
-    background:#fff;
+    background:var(--card);
     border:1px solid rgba(157,18,51,.12);
     border-radius:8px;
     box-shadow:var(--shadow);
@@ -149,7 +225,7 @@
   }
   .type-tab:hover{color:var(--sjtu-red-dark);}
   .type-tab.active{
-    background:#fff;
+    background:var(--card);
     color:var(--sjtu-red);
     box-shadow:0 1px 5px rgba(32,34,38,.12);
   }
@@ -168,7 +244,7 @@
     font-size:.79rem;
     font-weight:500;
     border-radius:4px;
-    background:#fff;
+    background:var(--card);
     border:1px solid var(--line);
     color:var(--sub);
     cursor:pointer;
@@ -265,7 +341,7 @@
   }
   footer{
     border-top:1px solid var(--line);
-    background:#fff;
+    background:var(--card);
     text-align:center;
     color:var(--sub);
     font-size:.77rem;
@@ -290,6 +366,7 @@
   }
   #toast.show{opacity:1;transform:translate(-50%,0);}
   @media (max-width:640px){
+    .theme-toggle-wrap { top: 16px; right: 16px; }
     .site-header{min-height:224px;background-position:58% center;}
     .header-inner{
       width:calc(100% - 32px);
@@ -318,8 +395,23 @@
 </style>
 </head>
 <body>
+<script>
+  // 立即执行函数，防止闪烁
+  (function () {
+    const savedTheme = localStorage.getItem('theme') || 'auto';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  })();
+</script>
 
 <header class="site-header">
+  <div class="theme-toggle-wrap">
+    <select id="theme-select" class="theme-select" aria-label="切换主题模式">
+      <option value="auto">🌓 自动</option>
+      <option value="light">☀️ 浅色</option>
+      <option value="dark">🌙 深色</option>
+    </select>
+  </div>
+
   <div class="header-inner">
     <img class="sjtu-logo" src="交我导校标.png" alt="上海交通大学">
     <div class="brand-copy">
@@ -365,7 +457,20 @@
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script src="交我导数据.js"></script>
+
 <script>
+// ====== 修复：主题切换逻辑放进正确的 script 标签内 ======
+const themeSelect = document.getElementById('theme-select');
+const currentTheme = localStorage.getItem('theme') || 'auto';
+
+themeSelect.value = currentTheme;
+
+themeSelect.addEventListener('change', (e) => {
+  const theme = e.target.value;
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+});
+
 const items = Array.isArray(window.JIAOWODAO_DATA) ? window.JIAOWODAO_DATA : [];
 const cats = ["全部", ...Array.from(new Set(items.map(i => i.cat)))];
 const chipsEl = document.getElementById("chips");
