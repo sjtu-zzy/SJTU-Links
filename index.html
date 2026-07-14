@@ -413,11 +413,156 @@
     #pet-recall-btn:hover{transform:scale(1.15);box-shadow:0 6px 20px rgba(157,18,51,0.45);}
     #pet-recall-btn.hidden-recall{display:none;}
     @keyframes recall-pulse{0%,100%{box-shadow:0 4px 14px rgba(157,18,51,0.3);}50%{box-shadow:0 4px 24px rgba(216,182,106,0.55);}}
+
+    /* AI 对话框样式 */
+    #ai-trigger-btn {
+      position: fixed;
+      right: 24px;
+      bottom: 124px;
+      z-index: 19;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid var(--sjtu-gold);
+      background: var(--sjtu-red);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(157, 18, 51, 0.4);
+      transition: transform 0.2s, background-color 0.2s;
+    }
+    #ai-trigger-btn:hover {
+      transform: scale(1.1);
+      background: var(--sjtu-red-dark);
+    }
+    #ai-chat-window {
+      position: fixed;
+      right: 24px;
+      bottom: 124px;
+      width: 360px;
+      height: 500px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 22;
+    }
+    #ai-chat-window.show {
+      display: flex;
+    }
+    .ai-chat-header {
+      background: linear-gradient(135deg, var(--sjtu-red) 0%, var(--sjtu-red-dark) 100%);
+      color: #fff;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid var(--sjtu-gold);
+    }
+    .ai-chat-header h3 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .ai-chat-close {
+      background: transparent;
+      border: 0;
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px;
+      opacity: 0.8;
+    }
+    .ai-chat-close:hover { opacity: 1; }
+    .ai-messages {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: var(--page);
+    }
+    .ai-msg {
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      word-break: break-all;
+    }
+    .ai-msg.user {
+      align-self: flex-end;
+      background: var(--sjtu-red);
+      color: #fff;
+      border-bottom-right-radius: 2px;
+    }
+    .ai-msg.bot {
+      align-self: flex-start;
+      background: var(--card);
+      color: var(--ink);
+      border-bottom-left-radius: 2px;
+      border: 1px solid var(--line);
+    }
+    .ai-msg.error {
+      align-self: center;
+      background: #fff0f3;
+      color: var(--sjtu-red-dark);
+      border: 1px solid #d9a8b3;
+      font-size: 0.8rem;
+    }
+    .ai-chat-input-area {
+      padding: 10px 12px;
+      background: var(--card);
+      border-top: 1px solid var(--line);
+      display: flex;
+      gap: 8px;
+    }
+    #ai-chat-input {
+      flex: 1;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      background: var(--page);
+      color: var(--ink);
+      outline: none;
+    }
+    #ai-chat-input:focus {
+      border-color: var(--sjtu-red);
+    }
+    .ai-send-btn {
+      background: var(--sjtu-red);
+      color: #fff;
+      border: 0;
+      border-radius: 6px;
+      padding: 0 14px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .ai-send-btn:hover { background: var(--sjtu-red-dark); }
+
     @media (max-width:640px){
       #site-pet-inner{width:64px;height:64px;}
       #pet-close-btn{width:17px;height:17px;font-size:9px;top:-2px;right:-2px;opacity:0.55;}
       #pet-bubble{font-size:0.72rem;padding:6px 10px;max-width:160px;border-radius:8px;}
       #pet-recall-btn{width:32px;height:32px;font-size:14px;}
+      
+      /* 移动端AI对话浮窗自适应 */
+      #ai-trigger-btn { right: 10px; bottom: 84px; width: 40px; height: 40px; }
+      #ai-chat-window {
+        right: 10px;
+        bottom: 84px;
+        width: calc(100% - 20px);
+        height: 60%;
+      }
     }
   </style>
 </head>
@@ -505,7 +650,6 @@
 </footer>
 <div id="toast" role="status" aria-live="polite"></div>
 
-<!-- 小宠物导导 -->
 <div id="site-pet-wrapper" aria-label="导航小宠物导导" title="拖拽我~ 点击互动~">
   <div id="site-pet-inner">
     <button id="pet-close-btn" aria-label="隐藏导导" title="隐藏导导">×</button>
@@ -542,6 +686,21 @@
 </div>
 <button id="pet-recall-btn" class="hidden-recall" aria-label="召唤导导" title="召唤导导">🐦</button>
 
+<button id="ai-trigger-btn" title="问问AI助手" aria-label="问问AI助手">💬</button>
+<div id="ai-chat-window">
+  <div class="ai-chat-header">
+    <h3 id="ai-title">交我导 AI 助手</h3>
+    <button class="ai-chat-close" id="ai-chat-close">&times;</button>
+  </div>
+  <div class="ai-messages" id="ai-messages">
+    <div class="ai-msg bot" id="ai-welcome">你好！我是交我导 AI 助手，有什么可以帮你的吗？</div>
+  </div>
+  <div class="ai-chat-input-area">
+    <input type="text" id="ai-chat-input" placeholder="输入你想问的内容...">
+    <button class="ai-send-btn" id="ai-send-btn">发送</button>
+  </div>
+</div>
+
 <script src="交我导数据.js"></script>
 <script>
 // ========== 国际化字典 ==========
@@ -570,6 +729,10 @@ const i18n = {
     nextPage: '下一页',
     lastPage: '末页',
     pageSizeLabel: '每页显示',
+    aiTitle: '交我导 AI 助手',
+    aiWelcome: '你好！我是交我导 AI 助手，有什么可以帮你的吗？',
+    aiInputPlaceholder: '输入你想问的内容...',
+    aiSend: '发送',
     petDialogues: [
       '啾~ 迷路了吗？', '试试搜索功能吧！', '交大网站都在这里！',
       '点击卡片直达官网~', '啾啾！需要帮助吗？', '我可以帮你找公众号！',
@@ -605,6 +768,10 @@ const i18n = {
     nextPage: 'Next',
     lastPage: 'Last',
     pageSizeLabel: 'Per page',
+    aiTitle: 'SJTU AI Assistant',
+    aiWelcome: 'Hello! I am the SJTU AI Assistant. How can I help you?',
+    aiInputPlaceholder: 'Type your question...',
+    aiSend: 'Send',
     petDialogues: [
       'Chirp~ Lost?', 'Try the search!', 'All SJTU sites here!',
       'Click cards for official sites~', 'Chirp chirp! Need help?', 'I can find WeChat accounts!',
@@ -656,6 +823,14 @@ function applyLanguage(lang) {
   document.getElementById('feedback-label').textContent = t('feedbackLabel');
   document.getElementById('visitor-prefix').textContent = t('visitorPrefix');
   document.getElementById('visitor-suffix').textContent = t('visitorSuffix');
+  
+  // 更新 AI 模块的翻译
+  document.getElementById('ai-title').textContent = t('aiTitle');
+  const welcomeMsg = document.getElementById('ai-welcome');
+  if (welcomeMsg) welcomeMsg.textContent = t('aiWelcome');
+  document.getElementById('ai-chat-input').placeholder = t('aiInputPlaceholder');
+  document.getElementById('ai-send-btn').textContent = t('aiSend');
+
   updateThemeOptions();
   const updatedAtEl = document.getElementById('updated-at');
   if (updatedAtEl) {
@@ -1393,6 +1568,92 @@ renderPagination();
     }
   }
   initPet();
+})();
+
+// ========== AI 对话框交互逻辑 ==========
+(function() {
+  const triggerBtn = document.getElementById('ai-trigger-btn');
+  const chatWindow = document.getElementById('ai-chat-window');
+  const closeBtn = document.getElementById('ai-chat-close');
+  const sendBtn = document.getElementById('ai-send-btn');
+  const inputEl = document.getElementById('ai-chat-input');
+  const messagesEl = document.getElementById('ai-messages');
+
+  let chatHistory = []; // 用于保存上下文记忆
+
+  // 切换窗口显示隐藏
+  triggerBtn.addEventListener('click', () => {
+    chatWindow.classList.add('show');
+    triggerBtn.style.display = 'none';
+  });
+
+  closeBtn.addEventListener('click', () => {
+    chatWindow.classList.remove('show');
+    triggerBtn.style.display = 'flex';
+  });
+
+  // 发送消息
+  async function handleSend() {
+    const query = inputEl.value.trim();
+    if (!query) return;
+
+    // 1. 用户气泡展示
+    appendMessage(query, 'user');
+    inputEl.value = '';
+
+    // 2. Loading 占位
+    const loadingId = 'ai-loading-' + Date.now();
+    appendMessage('正在思考中...', 'bot', loadingId);
+
+    try {
+      // 3. 请求代理接口：这里的 /api/chat 是 Vercel 自动分配给后端文件的接口地址
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: query,
+          history: chatHistory
+        })
+      });
+
+      const data = await response.json();
+      
+      // 移除 Loading 气泡
+      document.getElementById(loadingId)?.remove();
+
+      if (response.ok && data.choices && data.choices[0]) {
+        const reply = data.choices[0].message.content;
+        appendMessage(reply, 'bot');
+        // 将此轮对话加入上下文记忆
+        chatHistory.push({ role: 'user', content: query });
+        chatHistory.push({ role: 'assistant', content: reply });
+        // 限制历史记录上限，防止上下文请求体过大
+        if (chatHistory.length > 10) chatHistory.splice(0, 2);
+      } else {
+        appendMessage(data.error || '请求失败，请稍后重试', 'error');
+      }
+
+    } catch (err) {
+      document.getElementById(loadingId)?.remove();
+      appendMessage('网络连接错误，请检查代理配置或连接状态', 'error');
+    }
+  }
+
+  function appendMessage(text, type, id = '') {
+    const msg = document.createElement('div');
+    msg.className = `ai-msg ${type}`;
+    if (id) msg.id = id;
+    msg.textContent = text;
+    messagesEl.appendChild(msg);
+    messagesEl.scrollTop = messagesEl.scrollHeight; // 滚动至底部
+  }
+
+  sendBtn.addEventListener('click', handleSend);
+  inputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') handleSend();
+  });
 })();
 </script>
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
