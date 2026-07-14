@@ -3,6 +3,7 @@ export async function onRequest(context) {
   // 1. 安全提取 Cloudflare Pages 后台设置的环境变量
   const apiKey = context.env.AI_API_KEY;
   const apiUrl = context.env.AI_API_URL;
+  const model = context.env.AI_MODEL || "gpt-4o-mini";
 
   // 跨域处理与错误保护
   if (!apiKey || !apiUrl) {
@@ -12,14 +13,21 @@ export async function onRequest(context) {
     });
   }
 
+  if (context.request.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers: corsHeaders });
+  }
+
   // 仅允许 POST 请求
   if (context.request.method !== "POST") {
-    return new Response("Method Not Allowed", { status: 405 });
+    return new Response("Method Not Allowed", { status: 405, headers: corsHeaders });
   }
 
   try {
     // 解析前端传来的用户问题和历史会话
     const { message, history } = await context.request.json();
+    if (typeof message !== "string" || !message.trim()) {
+      return jsonResponse({ error: "请先输入问题。" }, 400);
+    }
 
     // 2. 设计完美的系统提示词 (System Prompt)
     const systemPrompt = `
@@ -44,42 +52,68 @@ export async function onRequest(context) {
 
     // 将前端保存的上下文记忆同步过来（限制条数防止体积过大）
     if (history && Array.isArray(history)) {
-      messages.push(...history);
+      messages.push(...history.slice(-10).filter((item) =>
+        item && (item.role === "user" || item.role === "assistant") &&
+        typeof item.content === "string"
+      ));
     }
 
     // 放入当前这一轮的用户问题
     messages.push({ role: "user", content: message });
 
     // 4. 调用大模型 API
-    const apiResponse = await fetch(`${apiUrl}/chat/completions`, {
+    const endpoint = `${apiUrl.replace(/\/$/, "").replace(/\/chat\/completions$/, "")}/chat/completions`;
+    const apiResponse = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini", // 推荐此高连通性且速度极快的模型，也可改成你服务商支持的其他模型
+        model,
         messages: messages,
         temperature: 0.7,
         max_tokens: 300
       })
     });
 
-    const data = await apiResponse.json();
+    const responseText = await apiResponse.text();
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch {
+      return jsonResponse({ error: "AI 服务返回了无法解析的响应。", detail: responseText.slice(0, 300) }, 502);
+    }
+
+    if (!apiResponse.ok) {
+      return jsonResponse({
+        error: data?.error?.message || data?.error || "AI 服务请求失败。",
+        upstreamStatus: apiResponse.status
+      }, apiResponse.status >= 400 && apiResponse.status < 600 ? apiResponse.status : 502);
+    }
+
+    if (!data?.choices?.[0]?.message?.content) {
+      return jsonResponse({ error: "AI 服务未返回有效回复。" }, 502);
+    }
 
     // 5. 将大模型的结果返回给前端
     return new Response(JSON.stringify(data), {
       status: apiResponse.status,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*" // 允许前端跨域
-      }
+      headers: corsHeaders
     });
 
   } catch (error) {
-    return new Response(JSON.stringify({ error: "服务器内部错误：" + error.message }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" }
-    });
+    return jsonResponse({ error: "服务器内部错误：" + error.message }, 500);
   }
+}
+
+const corsHeaders = {
+  "Content-Type": "application/json",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type"
+};
+
+function jsonResponse(body, status) {
+  return new Response(JSON.stringify(body), { status, headers: corsHeaders });
 }

@@ -730,7 +730,7 @@ const i18n = {
     lastPage: '末页',
     pageSizeLabel: '每页显示',
     aiTitle: '交我导 AI 助手 · AI 可能犯错 注意核实',
-    aiWelcome: '你好！我是交我导 AI 助手，有什么可以帮你的吗？',
+    aiWelcome: '你好！我是交我导 AI 助手导导，有什么可以帮你的吗？',
     aiInputPlaceholder: '输入你想问的内容...',
     aiSend: '发送',
     petDialogues: [
@@ -769,7 +769,7 @@ const i18n = {
     lastPage: 'Last',
     pageSizeLabel: 'Per page',
     aiTitle: 'SJTU AI Assistant · Be sure to verify that AI can make mistakes',
-    aiWelcome: 'Hello! I am the SJTU AI Assistant. How can I help you?',
+    aiWelcome: 'Hello! I am the SJTU AI Assistant, Daodao. How can I help you?',
     aiInputPlaceholder: 'Type your question...',
     aiSend: 'Send',
     petDialogues: [
@@ -1600,13 +1600,15 @@ renderPagination();
     // 1. 用户气泡展示
     appendMessage(query, 'user');
     inputEl.value = '';
+    inputEl.disabled = true;
+    sendBtn.disabled = true;
 
     // 2. Loading 占位
     const loadingId = 'ai-loading-' + Date.now();
     appendMessage('正在思考中...', 'bot', loadingId);
 
     try {
-      // 3. 请求代理接口：这里的 /api/chat 是 Vercel 自动分配给后端文件的接口地址
+      // 3. Cloudflare Pages Functions 将 functions/chat.js 映射为 /chat
       const response = await fetch('/chat', {
         method: 'POST',
         headers: {
@@ -1618,7 +1620,13 @@ renderPagination();
         })
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      let data = {};
+      try {
+        data = JSON.parse(responseText);
+      } catch {
+        throw new Error('AI 服务返回了无法解析的响应');
+      }
       
       // 移除 Loading 气泡
       document.getElementById(loadingId)?.remove();
@@ -1632,12 +1640,16 @@ renderPagination();
         // 限制历史记录上限，防止上下文请求体过大
         if (chatHistory.length > 10) chatHistory.splice(0, 2);
       } else {
-        appendMessage(data.error || '请求失败，请稍后重试', 'error');
+        appendMessage(data.error || `请求失败（${response.status}），请稍后重试`, 'error');
       }
 
     } catch (err) {
       document.getElementById(loadingId)?.remove();
-      appendMessage('网络连接错误，请检查代理配置或连接状态', 'error');
+      appendMessage(err.message || '网络连接错误，请检查服务配置或连接状态', 'error');
+    } finally {
+      inputEl.disabled = false;
+      sendBtn.disabled = false;
+      inputEl.focus();
     }
   }
 
