@@ -733,6 +733,7 @@ const i18n = {
     aiWelcome: '你好！我是交我导 AI 助手导导，有什么可以帮你的吗？',
     aiInputPlaceholder: '输入你想问的内容...',
     aiSend: '发送',
+    aiThinking: '正在思考中...',
     petDialogues: [
       '啾~ 迷路了吗？', '试试搜索功能吧！', '交大网站都在这里！',
       '点击卡片直达官网~', '啾啾！需要帮助吗？', '我可以帮你找公众号！',
@@ -772,6 +773,7 @@ const i18n = {
     aiWelcome: 'Hello! I am the SJTU AI Assistant, Daodao. How can I help you?',
     aiInputPlaceholder: 'Type your question...',
     aiSend: 'Send',
+    aiThinking: 'Thinking...',
     petDialogues: [
       'Chirp~ Lost?', 'Try the search!', 'All SJTU sites here!',
       'Click cards for official sites~', 'Chirp chirp! Need help?', 'I can find WeChat accounts!',
@@ -1605,7 +1607,7 @@ renderPagination();
 
     // 2. Loading 占位
     const loadingId = 'ai-loading-' + Date.now();
-    appendMessage('正在思考中...', 'bot', loadingId);
+    appendMessage(t('aiThinking'), 'bot', loadingId);
 
     try {
       // 3. Cloudflare Pages Functions 将 functions/chat.js 映射为 /chat
