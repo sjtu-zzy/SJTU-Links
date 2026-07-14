@@ -1,54 +1,33 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>交我导</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='42' stroke='%23d8b66a' stroke-width='8' fill='none'/%3E%3Ctext x='46' y='67' font-family='serif' font-size='52' font-weight='bold' fill='%239d1233' text-anchor='middle'%3E交%3C/text%3E%3Cpolygon points='58,22 80,20 78,42 71,35 51,55 45,49 65,29' fill='%239d1233'/%3E%3C/svg%3E">
-<style>
-  :root{
-    --sjtu-red:#9d1233;
-    --sjtu-red-dark:#6f0922;
-    --sjtu-gold:#d8b66a;
-    --page:#f4f5f7;
-    --card:#ffffff;
-    --ink:#222326;
-    --sub:#686b70;
-    --line:#dfe2e6;
-    --green:#267843;
-    --shadow:0 16px 42px rgba(34,20,24,.12);
-    --accent:#9d1233;
-    --accent-strong:#6f0922;
-    --active-bg:#f8e9ed;
-    --surface-muted:#e9ebee;
-    --badge-bg:#eef0f2;
-    --badge-ink:#656970;
-    --copy-bg:#f4fbf6;
-    --copy-border:#bdd8c5;
-    --badge-wechat-bg: #e6f4e9;
-  }
-
-  :root[data-theme="dark"] {
-    color-scheme:dark;
-    --page:#121214;
-    --card:#1f2024;
-    --ink:#e3e5e9;
-    --sub:#a7abb2;
-    --line:#34373d;
-    --shadow:0 16px 42px rgba(0,0,0,.35);
-    --accent:#f0809b;
-    --accent-strong:#ffb1c2;
-    --active-bg:#3b1d28;
-    --surface-muted:#292b31;
-    --badge-bg:#30333a;
-    --badge-ink:#d0d3d8;
-    --badge-wechat-bg: #162d1f;
-    --green: #52c41a;
-    --copy-bg:#182c1f;
-    --copy-border:#2d5a3a;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root[data-theme="auto"] {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>交我导</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='42' stroke='%23d8b66a' stroke-width='8' fill='none'/%3E%3Ctext x='46' y='67' font-family='serif' font-size='52' font-weight='bold' fill='%239d1233' text-anchor='middle'%3E交%3C/text%3E%3Cpolygon points='58,22 80,20 78,42 71,35 51,55 45,49 65,29' fill='%239d1233'/%3E%3C/svg%3E">
+  <style>
+    :root{
+      --sjtu-red:#9d1233;
+      --sjtu-red-dark:#6f0922;
+      --sjtu-gold:#d8b66a;
+      --page:#f4f5f7;
+      --card:#ffffff;
+      --ink:#222326;
+      --sub:#686b70;
+      --line:#dfe2e6;
+      --green:#267843;
+      --shadow:0 16px 42px rgba(34,20,24,.12);
+      --accent:#9d1233;
+      --accent-strong:#6f0922;
+      --active-bg:#f8e9ed;
+      --surface-muted:#e9ebee;
+      --badge-bg:#eef0f2;
+      --badge-ink:#656970;
+      --copy-bg:#f4fbf6;
+      --copy-border:#bdd8c5;
+      --badge-wechat-bg:#e6f4e9;
+    }
+    :root[data-theme="dark"] {
       color-scheme:dark;
       --page:#121214;
       --card:#1f2024;
@@ -62,417 +41,401 @@
       --surface-muted:#292b31;
       --badge-bg:#30333a;
       --badge-ink:#d0d3d8;
-      --badge-wechat-bg: #162d1f;
-      --green: #52c41a;
+      --badge-wechat-bg:#162d1f;
+      --green:#52c41a;
       --copy-bg:#182c1f;
       --copy-border:#2d5a3a;
     }
-  }
-  .theme-toggle-wrap {
-    position: absolute;
-    top: 24px;
-    right: max(20px, calc((100% - 1120px) / 2 + 20px));
-    z-index: 10;
-    height:36px;
-    display:flex;
-    align-items:center;
-    gap:6px;
-    padding-left:10px;
-    border:1px solid rgba(255,255,255,.3);
-    border-radius:6px;
-    background:rgba(255,255,255,.14);
-    color:#fff;
-    backdrop-filter:blur(6px);
-  }
-  .theme-icon{width:16px;height:16px;flex:0 0 16px;}
-  .theme-select {
-    appearance: none;
-    -webkit-appearance: none;
-    height:34px;
-    background:transparent;
-    color: #fff;
-    border:0;
-    padding:6px 30px 6px 2px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    cursor: pointer;
-    outline: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 8px center;
-    background-size: 14px;
-  }
-  .theme-toggle-wrap:hover{background:rgba(255,255,255,.22);}
-  .theme-toggle-wrap:focus-within{outline:3px solid rgba(255,255,255,.3);outline-offset:2px;}
-  .theme-select option {
-    background:var(--card);
-    color:var(--ink);
-  }
+    @media (prefers-color-scheme: dark) {
+      :root[data-theme="auto"] {
+        color-scheme:dark;
+        --page:#121214;
+        --card:#1f2024;
+        --ink:#e3e5e9;
+        --sub:#a7abb2;
+        --line:#34373d;
+        --shadow:0 16px 42px rgba(0,0,0,.35);
+        --accent:#f0809b;
+        --accent-strong:#ffb1c2;
+        --active-bg:#3b1d28;
+        --surface-muted:#292b31;
+        --badge-bg:#30333a;
+        --badge-ink:#d0d3d8;
+        --badge-wechat-bg:#162d1f;
+        --green:#52c41a;
+        --copy-bg:#182c1f;
+        --copy-border:#2d5a3a;
+      }
+    }
 
-  *{box-sizing:border-box;}
-  body{
-    margin:0;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
-    background:var(--page);
-    color:var(--ink);
-  }
-  button,input{font:inherit;}
-  .site-header{
-    min-height:258px;
-    color:#fff;
-    background-color:var(--sjtu-red);
-    background-image:url("交我导校门.jpg");
-    background-position:center;
-    background-size:cover;
-    border-bottom:4px solid var(--sjtu-gold);
-    position:relative;
-    overflow:hidden;
-  }
-  .site-header::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:linear-gradient(90deg,rgba(83,0,20,.36),rgba(83,0,20,.06) 62%,rgba(83,0,20,.18));
-    pointer-events:none;
-  }
-  .header-inner{
-    width:min(1120px,calc(100% - 40px));
-    min-height:254px;
-    margin:0 auto;
-    padding:34px 0 48px;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    align-items:flex-start;
-    position:relative;
-    z-index:1;
-  }
-  .sjtu-logo{
-    width:270px;
-    max-width:68vw;
-    height:auto;
-    display:block;
-  }
-  .brand-copy{
-    display:flex;
-    align-items:flex-end;
-    gap:20px;
-  }
-  .brand-copy h1{
-    margin:0;
-    font-family:"Songti SC","STSong","SimSun",serif;
-    font-size:2.65rem;
-    font-weight:700;
-    line-height:1;
-    letter-spacing:0;
-    text-shadow:0 2px 12px rgba(55,0,14,.22);
-  }
-  .brand-copy p{
-    margin:0 0 3px;
-    padding-left:20px;
-    border-left:1px solid rgba(255,255,255,.56);
-    font-size:.94rem;
-    line-height:1.55;
-    color:rgba(255,255,255,.9);
-  }
-  .search-wrap{
-    max-width:860px;
-    margin:-31px auto 0;
-    padding:0 16px;
-    position:relative;
-    z-index:5;
-  }
-  .search-field{
-    height:62px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:0 18px;
-    background:var(--card);
-    border:1px solid rgba(157,18,51,.12);
-    border-radius:8px;
-    box-shadow:var(--shadow);
-  }
-  .search-icon{
-    width:22px;
-    height:22px;
-    flex:0 0 22px;
-    color:var(--accent);
-  }
-  #search{
-    width:100%;
-    height:100%;
-    padding:0;
-    font-size:1rem;
-    color:var(--ink);
-    border:0;
-    outline:0;
-    background:transparent;
-    -webkit-appearance: none;
-  }
-  #search::-webkit-search-decoration,
-  #search::-webkit-search-results-button,
-  #search::-webkit-search-results-decoration {
-    display: none;
-  }
-  #search::placeholder{color:#92959a;}
-  #search::-webkit-search-cancel-button{display:none;}
-  .search-clear{
-    width:34px;
-    height:34px;
-    flex:0 0 34px;
-    display:grid;
-    place-items:center;
-    padding:0;
-    border:0;
-    border-radius:4px;
-    background:transparent;
-    color:var(--sub);
-    cursor:pointer;
-  }
-  .search-clear[hidden]{display:none;}
-  .search-clear svg{width:18px;height:18px;}
-  .search-clear:hover{background:var(--surface-muted);color:var(--ink);}
-  .search-field:focus-within{
-    border-color:var(--accent);
-    box-shadow:0 16px 42px rgba(111,9,34,.18);
-  }
-  .type-tabs{
-    width:max-content;
-    max-width:calc(100% - 32px);
-    display:flex;
-    justify-content:center;
-    gap:0;
-    margin:28px auto 6px;
-    padding:3px;
-    border:1px solid var(--line);
-    border-radius:7px;
-    background:var(--surface-muted);
-  }
-  .type-tab{
-    min-width:84px;
-    min-height:38px;
-    padding:8px 16px;
-    border:0;
-    border-radius:4px;
-    background:transparent;
-    cursor:pointer;
-    font-size:.9rem;
-    font-weight:600;
-    color:var(--sub);
-    transition:background-color .15s,color .15s,box-shadow .15s;
-  }
-  .type-tab:hover{color:var(--accent-strong);}
-  .type-tab.active{
-    background:var(--card);
-    color:var(--accent);
-    box-shadow:0 1px 5px rgba(32,34,38,.12);
-  }
-  .chips{
-    max-width:1200px;
-    margin:16px auto 0;
-    padding:0 16px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    justify-content:center;
-  }
-  .chip{
-    min-height:31px;
-    padding:5px 12px;
-    font-size:.79rem;
-    font-weight:500;
-    border-radius:4px;
-    background:var(--card);
-    border:1px solid var(--line);
-    color:var(--sub);
-    cursor:pointer;
-    white-space:nowrap;
-    transition:border-color .15s,color .15s,background-color .15s;
-  }
-  .chip:hover{border-color:var(--accent);color:var(--accent-strong);}
-  .chip.active{
-    background:var(--active-bg);
-    border-color:var(--accent);
-    color:var(--accent-strong);
-    font-weight:650;
-  }
-  main{max-width:1120px;margin:0 auto;padding:25px 16px 64px;}
-  .result-meta{
-    min-height:31px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    margin-bottom:15px;
-  }
-  .count{text-align:center;color:var(--sub);font-size:.83rem;}
-  .reset-filters{
-    width:28px;
-    height:28px;
-    display:grid;
-    place-items:center;
-    padding:0;
-    border:1px solid var(--line);
-    border-radius:4px;
-    background:var(--card);
-    color:var(--sub);
-    cursor:pointer;
-  }
-  .reset-filters[hidden]{display:none;}
-  .reset-filters svg{width:15px;height:15px;}
-  .reset-filters:hover{border-color:var(--accent);color:var(--accent);}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:14px;}
-  .card{
-    min-height:146px;
-    background:var(--card);
-    border:1px solid var(--line);
-    border-top:3px solid transparent;
-    border-radius:7px;
-    padding:15px 16px 14px;
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-    transition:transform .15s,box-shadow .15s,border-color .15s;
-    text-decoration:none;
-    color:inherit;
-  }
-  a.card:hover{
-    transform:translateY(-2px);
-    box-shadow:0 10px 24px rgba(32,34,38,.08);
-    border-color:#d7c0c6;
-    border-top-color:var(--accent);
-  }
-  a.card:focus-visible,.copy-btn:focus-visible,.type-tab:focus-visible,.chip:focus-visible,.search-clear:focus-visible,.reset-filters:focus-visible{
-    outline:3px solid rgba(157,18,51,.25);
-    outline-offset:2px;
-  }
-  .card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
-  .card .name{font-weight:650;font-size:.96rem;line-height:1.42;overflow-wrap:anywhere;}
-  .badge{
-    flex-shrink:0;
-    font-size:.67rem;
-    padding:2px 7px;
-    border-radius:3px;
-    background:var(--badge-bg);
-    color:var(--badge-ink);
-    white-space:nowrap;
-  }
-  .badge.wechat{background:var(--badge-wechat-bg);color:var(--green);}
-  .card .cat{font-size:.74rem;color:var(--accent-strong);opacity:.92;}
-  .card .desc{font-size:.78rem;color:var(--sub);line-height:1.5;}
-  .card .link-hint{
-    display:flex;
-    align-items:center;
-    gap:5px;
-    font-size:.72rem;
-    color:#8a8e94;
-    margin-top:auto;
-    padding-top:4px;
-  }
-  .card .link-hint svg{width:13px;height:13px;}
-  .copy-btn{
-    min-height:31px;
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    align-self:flex-start;
-    margin-top:auto;
-    padding:6px 10px;
-    border:1px solid var(--copy-border);
-    border-radius:4px;
-    background:var(--copy-bg);
-    color:var(--green);
-    cursor:pointer;
-    font-size:.75rem;
-    font-weight:600;
-  }
-  .copy-btn svg{width:14px;height:14px;}
-  .copy-btn:hover{filter:brightness(1.07);}
-  .empty{text-align:center;color:var(--sub);padding:60px 20px;font-size:.95rem;}
-  .data-error{
-    max-width:860px;
-    margin:18px auto 0;
-    padding:12px 16px;
-    border:1px solid #d9a8b3;
-    border-radius:6px;
-    background:#fff0f3;
-    color:var(--sjtu-red-dark);
-    text-align:center;
-    font-size:.86rem;
-  }
-  footer{
-    border-top:1px solid var(--line);
-    background:var(--card);
-    text-align:center;
-    color:var(--sub);
-    font-size:.77rem;
-    padding:24px 16px 34px;
-    line-height:1.85;
-  }
-  footer b{color:var(--accent-strong);}
-  #toast{
-    position:fixed;
-    left:50%;
-    bottom:28px;
-    transform:translate(-50%,12px);
-    padding:9px 14px;
-    border-radius:5px;
-    background:#24262a;
-    color:#fff;
-    font-size:.82rem;
-    opacity:0;
-    pointer-events:none;
-    transition:.18s;
-    z-index:20;
-  }
-  #toast.show{opacity:1;transform:translate(-50%,0);}
-  @media (max-width:640px){
-    .theme-toggle-wrap{top:14px;right:14px;height:34px;padding-left:8px;}
-    .theme-select{height:32px;padding-right:27px;font-size:.78rem;}
-    .site-header{min-height:210px;background-position:58% center;}
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+      background:var(--page);
+      color:var(--ink);
+    }
+    button,input{font:inherit;}
+
+    /* 头部控件容器 */
+    .header-controls {
+      position: absolute;
+      top: 24px;
+      right: max(20px, calc((100% - 1120px) / 2 + 20px));
+      z-index: 10;
+      display: flex;
+      gap: 8px;
+    }
+    .control-wrap {
+      height: 36px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px;
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 6px;
+      background: rgba(255,255,255,.14);
+      color: #fff;
+      backdrop-filter: blur(6px);
+    }
+    .control-icon { width: 16px; height: 16px; flex-shrink: 0; }
+    .control-select {
+      appearance: none;
+      -webkit-appearance: none;
+      height: 34px;
+      background: transparent;
+      color: #fff;
+      border: 0;
+      padding: 6px 30px 6px 2px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 14px;
+    }
+    .lang-select {
+      padding: 6px 28px 6px 2px;
+      background-position: right 6px center;
+    }
+    .control-wrap:hover { background: rgba(255,255,255,.22); }
+    .control-wrap:focus-within { outline: 3px solid rgba(255,255,255,.3); outline-offset: 2px; }
+    .control-select option {
+      background: var(--card);
+      color: var(--ink);
+    }
+
+    .site-header{
+      min-height:200px;
+      color:#fff;
+      background-color:#9d1233;
+      background:linear-gradient(135deg, #9d1233 0%, #6f0922 100%);
+      border-bottom:4px solid var(--sjtu-gold);
+      position:relative;
+      overflow:hidden;
+    }
+    .site-header::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(90deg,rgba(83,0,20,.36),rgba(83,0,20,.06) 62%,rgba(83,0,20,.18));
+      pointer-events:none;
+    }
     .header-inner{
-      width:calc(100% - 32px);
-      min-height:206px;
-      padding:25px 0 37px;
+      width:min(1120px,calc(100% - 40px));
+      min-height:196px;
+      margin:0 auto;
+      padding:20px 0 32px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      align-items:flex-start;
+      position:relative;
+      z-index:1;
     }
-    .sjtu-logo{width:205px;max-width:70vw;}
-    .brand-copy{display:block;}
-    .brand-copy h1{font-size:1.9rem;}
+    .brand-copy{
+      display:flex;
+      align-items:flex-end;
+      gap:20px;
+    }
+    .brand-copy h1{
+      margin:0;
+      font-family:"Songti SC","STSong","SimSun",serif;
+      font-size:2.65rem;
+      font-weight:700;
+      line-height:1;
+      letter-spacing:0;
+      text-shadow:0 2px 12px rgba(55,0,14,.22);
+    }
     .brand-copy p{
-      margin-top:8px;
-      padding-left:0;
-      border-left:0;
-      font-size:.82rem;
+      margin:0 0 3px;
+      padding-left:20px;
+      border-left:1px solid rgba(255,255,255,.56);
+      font-size:.94rem;
+      line-height:1.55;
+      color:rgba(255,255,255,.9);
     }
-    .search-wrap{margin-top:-27px;}
-    .search-field{height:54px;padding:0 13px;}
-    .type-tabs{margin-top:21px;}
-    .type-tab{min-width:75px;padding:8px 12px;}
+    .search-wrap{
+      max-width:860px;
+      margin:-31px auto 0;
+      padding:0 16px;
+      position:relative;
+      z-index:5;
+    }
+    .search-field{
+      height:62px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:0 18px;
+      background:var(--card);
+      border:1px solid rgba(157,18,51,.12);
+      border-radius:8px;
+      box-shadow:var(--shadow);
+    }
+    .search-icon{width:22px;height:22px;flex:0 0 22px;color:var(--accent);}
+    #search{
+      width:100%;
+      height:100%;
+      padding:0;
+      font-size:1rem;
+      color:var(--ink);
+      border:0;
+      outline:0;
+      background:transparent;
+      -webkit-appearance:none;
+    }
+    #search::-webkit-search-decoration,
+    #search::-webkit-search-results-button,
+    #search::-webkit-search-results-decoration{display:none;}
+    #search::placeholder{color:#92959a;}
+    #search::-webkit-search-cancel-button{display:none;}
+    .search-clear{
+      width:34px;height:34px;flex:0 0 34px;
+      display:grid;place-items:center;
+      padding:0;border:0;border-radius:4px;
+      background:transparent;color:var(--sub);cursor:pointer;
+    }
+    .search-clear[hidden]{display:none;}
+    .search-clear svg{width:18px;height:18px;}
+    .search-clear:hover{background:var(--surface-muted);color:var(--ink);}
+    .search-field:focus-within{
+      border-color:var(--accent);
+      box-shadow:0 16px 42px rgba(111,9,34,.18);
+    }
+    .type-tabs{
+      width:max-content;max-width:calc(100% - 32px);
+      display:flex;justify-content:center;gap:0;
+      margin:28px auto 6px;padding:3px;
+      border:1px solid var(--line);border-radius:7px;
+      background:var(--surface-muted);
+    }
+    .type-tab{
+      min-width:84px;min-height:38px;
+      padding:8px 16px;border:0;border-radius:4px;
+      background:transparent;cursor:pointer;
+      font-size:.9rem;font-weight:600;color:var(--sub);
+      transition:background-color .15s,color .15s,box-shadow .15s;
+    }
+    .type-tab:hover{color:var(--accent-strong);}
+    .type-tab.active{
+      background:var(--card);color:var(--accent);
+      box-shadow:0 1px 5px rgba(32,34,38,.12);
+    }
     .chips{
-      max-width:100%;
-      flex-wrap:nowrap;
-      justify-content:flex-start;
-      overflow-x:auto;
-      overscroll-behavior-inline:contain;
-      scroll-snap-type:x proximity;
-      scrollbar-width:none;
-      padding:0 16px 7px;
+      max-width:1200px;margin:16px auto 0;padding:0 16px;
+      display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
     }
-    .chips::-webkit-scrollbar{display:none;}
-    .chip{flex:0 0 auto;scroll-snap-align:start;}
-    main{padding-top:18px;}
-    .grid{grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;}
-    .card{min-height:146px;padding:12px 13px;}
-  }
-  @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;}
-  }
-</style>
+    .chip{
+      min-height:31px;padding:5px 12px;
+      font-size:.79rem;font-weight:500;border-radius:4px;
+      background:var(--card);border:1px solid var(--line);color:var(--sub);
+      cursor:pointer;white-space:nowrap;
+      transition:border-color .15s,color .15s,background-color .15s;
+    }
+    .chip:hover{border-color:var(--accent);color:var(--accent-strong);}
+    .chip.active{
+      background:var(--active-bg);border-color:var(--accent);
+      color:var(--accent-strong);font-weight:650;
+    }
+    main{max-width:1120px;margin:0 auto;padding:25px 16px 64px;}
+    .result-meta{
+      min-height:31px;display:flex;align-items:center;
+      justify-content:center;gap:8px;margin-bottom:15px;
+    }
+    .count{text-align:center;color:var(--sub);font-size:.83rem;}
+    .reset-filters{
+      width:28px;height:28px;display:grid;place-items:center;
+      padding:0;border:1px solid var(--line);border-radius:4px;
+      background:var(--card);color:var(--sub);cursor:pointer;
+    }
+    .reset-filters[hidden]{display:none;}
+    .reset-filters svg{width:15px;height:15px;}
+    .reset-filters:hover{border-color:var(--accent);color:var(--accent);}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:14px;}
+    .card{
+      min-height:146px;background:var(--card);border:1px solid var(--line);
+      border-top:3px solid transparent;border-radius:7px;
+      padding:15px 16px 14px;display:flex;flex-direction:column;gap:6px;
+      transition:transform .15s,box-shadow .15s,border-color .15s;
+      text-decoration:none;color:inherit;
+    }
+    a.card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 24px rgba(32,34,38,.08);
+      border-color:#d7c0c6;border-top-color:var(--accent);
+    }
+    .card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+    .card .name{font-weight:650;font-size:.96rem;line-height:1.42;overflow-wrap:anywhere;}
+    .badge{
+      flex-shrink:0;font-size:.67rem;padding:2px 7px;border-radius:3px;
+      background:var(--badge-bg);color:var(--badge-ink);white-space:nowrap;
+    }
+    .badge.wechat{background:var(--badge-wechat-bg);color:var(--green);}
+    .card .cat{font-size:.74rem;color:var(--accent-strong);opacity:.92;}
+    .card .desc{font-size:.78rem;color:var(--sub);line-height:1.5;}
+    .card .link-hint{
+      display:flex;align-items:center;gap:5px;
+      font-size:.72rem;color:#8a8e94;margin-top:auto;padding-top:4px;
+    }
+    .card .link-hint svg{width:13px;height:13px;}
+    .copy-btn{
+      min-height:31px;display:inline-flex;align-items:center;gap:6px;
+      align-self:flex-start;margin-top:auto;padding:6px 10px;
+      border:1px solid var(--copy-border);border-radius:4px;
+      background:var(--copy-bg);color:var(--green);
+      cursor:pointer;font-size:.75rem;font-weight:600;
+    }
+    .copy-btn svg{width:14px;height:14px;}
+    .copy-btn:hover{filter:brightness(1.07);}
+    .empty{text-align:center;color:var(--sub);padding:60px 20px;font-size:.95rem;}
+    .data-error{
+      max-width:860px;margin:18px auto 0;padding:12px 16px;
+      border:1px solid #d9a8b3;border-radius:6px;
+      background:#fff0f3;color:var(--sjtu-red-dark);
+      text-align:center;font-size:.86rem;
+    }
+    footer{
+      border-top:1px solid var(--line);background:var(--card);
+      text-align:center;color:var(--sub);font-size:.77rem;
+      padding:24px 16px 34px;line-height:1.85;
+    }
+    footer b{color:var(--accent-strong);}
+    #toast{
+      position:fixed;left:50%;bottom:28px;
+      transform:translate(-50%,12px);padding:9px 14px;
+      border-radius:5px;background:#24262a;color:#fff;
+      font-size:.82rem;opacity:0;pointer-events:none;
+      transition:.18s;z-index:20;
+    }
+    #toast.show{opacity:1;transform:translate(-50%,0);}
+
+    @media (max-width:640px){
+      .header-controls {
+        top: 14px;
+        right: 10px;
+        gap: 4px;
+      }
+      .control-wrap {
+        height: 32px;
+        padding: 0 6px;
+        gap: 2px;
+      }
+      .control-select {
+        height: 30px;
+        font-size: 0.75rem;
+        padding: 4px 24px 4px 2px;
+        background-position: right 4px center;
+        background-size: 12px;
+      }
+      .lang-select {
+        padding-right: 22px;
+      }
+      .site-header{min-height:160px;}
+      .header-inner{min-height:156px;padding:20px 0 28px;}
+      .brand-copy{display:block;}
+      .brand-copy h1{font-size:1.9rem;}
+      .brand-copy p{margin-top:8px;padding-left:0;border-left:0;font-size:.82rem;}
+      .search-wrap{margin-top:-27px;}
+      .search-field{height:54px;padding:0 13px;}
+      .type-tabs{margin-top:21px;}
+      .type-tab{min-width:75px;padding:8px 12px;}
+      .chips{max-width:100%;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x proximity;scrollbar-width:none;padding:0 16px 7px;}
+      .chips::-webkit-scrollbar{display:none;}
+      .chip{flex:0 0 auto;scroll-snap-align:start;}
+      main{padding-top:18px;}
+      .grid{grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;}
+      .card{min-height:146px;padding:12px 13px;}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;}
+    }
+
+    /* 导导宠物样式 */
+    #site-pet-wrapper{position:fixed;z-index:19;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;cursor:grab;transition:none;pointer-events:auto;}
+    #site-pet-wrapper.dragging{cursor:grabbing;z-index:21;transition:none;}
+    #site-pet-wrapper.flying-away{pointer-events:none;transition:transform 0.55s cubic-bezier(0.4,0,0.8,1),opacity 0.45s ease;}
+    #site-pet-wrapper.flying-back{pointer-events:none;transition:transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94),opacity 0.5s ease;}
+    #site-pet-wrapper.bounce-release{transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);}
+    #site-pet-wrapper.hidden-pet{display:none;}
+
+    #site-pet-inner{position:relative;width:88px;height:88px;filter:drop-shadow(0 8px 20px rgba(80,10,20,0.3));transition:filter 0.3s;}
+    #site-pet-inner:hover{filter:drop-shadow(0 10px 26px rgba(80,10,20,0.45));}
+    #site-pet-inner:active{filter:drop-shadow(0 4px 10px rgba(80,10,20,0.25));}
+    #site-pet-inner .wing-group{transition:transform 0.15s ease;}
+    #site-pet-inner.flap-wings .wing-left{animation:wing-flap-left 0.35s ease-in-out;}
+    #site-pet-inner.flap-wings .wing-right{animation:wing-flap-right 0.35s ease-in-out;}
+    #site-pet-inner.wings-out .wing-left{transform:rotate(-35deg);}
+    #site-pet-inner.wings-out .wing-right{transform:rotate(35deg);}
+    @keyframes wing-flap-left{0%{transform:rotate(0deg);}30%{transform:rotate(-38deg);}60%{transform:rotate(-8deg);}100%{transform:rotate(0deg);}}
+    @keyframes wing-flap-right{0%{transform:rotate(0deg);}30%{transform:rotate(38deg);}60%{transform:rotate(8deg);}100%{transform:rotate(0deg);}}
+
+    #pet-close-btn{
+      position:absolute;top:-4px;right:-4px;width:20px;height:20px;border-radius:50%;
+      border:1.5px solid rgba(157,18,51,0.35);background:var(--card);color:var(--sub);
+      font-size:11px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;
+      opacity:0;transition:opacity 0.2s,color 0.2s,border-color 0.2s;z-index:2;padding:0;
+    }
+    #site-pet-wrapper:hover #pet-close-btn,#site-pet-wrapper.dragging #pet-close-btn{opacity:1;}
+    #pet-close-btn:hover{color:#9d1233;border-color:#9d1233;background:#fff0f3;}
+
+    #pet-bubble{
+      position:absolute;bottom:100%;left:50%;transform:translate(-50%,-10px);
+      background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;
+      padding:8px 13px;font-size:0.82rem;font-weight:500;white-space:nowrap;
+      box-shadow:0 4px 16px rgba(0,0,0,0.1);pointer-events:none;opacity:0;
+      transition:opacity 0.25s,transform 0.25s;z-index:3;max-width:220px;text-align:center;
+    }
+    #pet-bubble.show{opacity:1;transform:translate(-50%,-14px);}
+    #pet-bubble::after{
+      content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);
+      width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;
+      border-top:7px solid var(--card);filter:drop-shadow(0 1px 0 var(--line));
+    }
+
+    #pet-recall-btn{
+      position:fixed;z-index:19;width:36px;height:36px;border-radius:50%;
+      border:2px solid #d8b66a;background:#9d1233;color:#fff;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;font-size:16px;
+      box-shadow:0 4px 14px rgba(157,18,51,0.3);transition:transform 0.25s,box-shadow 0.25s;
+      animation:recall-pulse 2.5s ease-in-out infinite;
+    }
+    #pet-recall-btn:hover{transform:scale(1.15);box-shadow:0 6px 20px rgba(157,18,51,0.45);}
+    #pet-recall-btn.hidden-recall{display:none;}
+    @keyframes recall-pulse{0%,100%{box-shadow:0 4px 14px rgba(157,18,51,0.3);}50%{box-shadow:0 4px 24px rgba(216,182,106,0.55);}}
+
+    @media (max-width:640px){
+      #site-pet-inner{width:64px;height:64px;}
+      #pet-close-btn{width:17px;height:17px;font-size:9px;top:-2px;right:-2px;opacity:0.55;}
+      #pet-bubble{font-size:0.72rem;padding:6px 10px;max-width:160px;border-radius:8px;}
+      #pet-recall-btn{width:32px;height:32px;font-size:14px;}
+    }
+  </style>
 </head>
 <body>
 <script>
-  // 立即执行函数，防止闪烁
   (function () {
     const savedTheme = localStorage.getItem('theme') || 'auto';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -480,23 +443,30 @@
 </script>
 
 <header class="site-header">
-  <div class="theme-toggle-wrap">
-    <svg class="theme-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"></circle>
-      <path d="M12 3.5a8.5 8.5 0 0 0 0 17V3.5Z" fill="currentColor"></path>
-    </svg>
-    <select id="theme-select" class="theme-select" aria-label="切换主题模式">
-      <option value="auto">跟随系统</option>
-      <option value="light">浅色</option>
-      <option value="dark">深色</option>
-    </select>
+  <div class="header-controls">
+    <div class="control-wrap">
+      <select id="lang-select" class="control-select lang-select" aria-label="切换语言">
+        <option value="zh">中文</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+    <div class="control-wrap">
+      <svg class="control-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"></circle>
+        <path d="M12 3.5a8.5 8.5 0 0 0 0 17V3.5Z" fill="currentColor"></path>
+      </svg>
+      <select id="theme-select" class="control-select" aria-label="切换主题模式">
+        <option value="auto">跟随系统</option>
+        <option value="light">浅色</option>
+        <option value="dark">深色</option>
+      </select>
+    </div>
   </div>
 
   <div class="header-inner">
-    <img class="sjtu-logo" src="交我导校标.png" alt="上海交通大学">
     <div class="brand-copy">
-      <h1>交我导</h1>
-      <p>上海交通大学网站与公众号导航</p>
+      <h1 id="site-title">交我导</h1>
+      <p id="subtitle">上海交通大学网站与公众号导航</p>
     </div>
   </div>
 </header>
@@ -536,34 +506,154 @@
 </main>
 
 <footer>
-  网站条目均为直达链接，主要依据 <b>上海交通大学官网「院系设置」和「机构设置」</b> 校准。<br>
-  微信公众号仅展示已核对的搜索名称，微信内搜索时请再核对认证主体。<br>
-  链接和机构信息会调整，更新日期：<span id="updated-at">-</span>。<br>
+  <span id="footer-text">网站条目均为直达链接，主要依据 <b>上海交通大学官网「院系设置」和「机构设置」</b> 校准。<br>微信公众号仅展示已核对的搜索名称，微信内搜索时请再核对认证主体。<br><b>非官方项目</b> ，链接和机构信息会调整，更新日期：<span id="updated-at">-</span>。</span><br>
   <span style="display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-  <span>意见反馈邮箱：</span>
-  <a href="mailto:adm@sj-tu.com"><b>adm@sj-tu.com</b></a>
-  <span id="busuanzi_container_site_pv" style="display: none;">
-    总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span id="feedback-label">意见反馈邮箱：</span>
+    <a href="mailto:adm@sj-tu.com"><b>adm@sj-tu.com</b></a>
+    <span id="busuanzi_container_site_pv" style="display: none;">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>
   </span>
-</span>
 </footer>
 <div id="toast" role="status" aria-live="polite"></div>
 
-<script src="交我导数据.js"></script>
+<!-- 小宠物导导 -->
+<div id="site-pet-wrapper" aria-label="导航小宠物导导" title="拖拽我~ 点击互动~">
+  <div id="site-pet-inner">
+    <button id="pet-close-btn" aria-label="隐藏导导" title="隐藏导导">×</button>
+    <div id="pet-bubble"></div>
+    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%;">
+      <ellipse cx="60" cy="108" rx="28" ry="6" fill="rgba(0,0,0,0.12)"/>
+      <ellipse cx="48" cy="97" rx="7.5" ry="4.5" fill="#c47a3a"/>
+      <ellipse cx="72" cy="97" rx="7.5" ry="4.5" fill="#c47a3a"/>
+      <ellipse cx="60" cy="66" rx="32" ry="30" fill="#9d1233"/>
+      <ellipse cx="60" cy="72" rx="21" ry="19" fill="#fdf0f3"/>
+      <g class="wing-group wing-left" style="transform-origin:30px 58px;">
+        <ellipse cx="28" cy="58" rx="17" ry="10" fill="#d8b66a" stroke="#c4a045" stroke-width="1.5" transform="rotate(-15 28 58)"/>
+        <ellipse cx="26" cy="56" rx="10" ry="6" fill="#e8cd80" transform="rotate(-15 26 56)"/>
+      </g>
+      <g class="wing-group wing-right" style="transform-origin:90px 58px;">
+        <ellipse cx="92" cy="58" rx="17" ry="10" fill="#d8b66a" stroke="#c4a045" stroke-width="1.5" transform="rotate(15 92 58)"/>
+        <ellipse cx="94" cy="56" rx="10" ry="6" fill="#e8cd80" transform="rotate(15 94 56)"/>
+      </g>
+      <circle cx="60" cy="40" r="24" fill="#9d1233"/>
+      <path d="M60 16 Q54 5 62 3 Q65 8 60 16" fill="#b8122e"/>
+      <path d="M58 17 Q50 7 56 4" fill="#c9203a" opacity="0.6"/>
+      <circle cx="49" cy="36" r="9.5" fill="#ffffff"/>
+      <circle cx="71" cy="36" r="9.5" fill="#ffffff"/>
+      <circle class="pupil pupil-left" cx="47" cy="34.5" r="4.8" fill="#1a1a1a"/>
+      <circle class="pupil pupil-right" cx="69" cy="34.5" r="4.8" fill="#1a1a1a"/>
+      <circle cx="45" cy="32" r="1.8" fill="#ffffff"/>
+      <circle cx="67" cy="32" r="1.8" fill="#ffffff"/>
+      <ellipse cx="39" cy="43" rx="6.5" ry="4" fill="#f0a0b0" opacity="0.7"/>
+      <ellipse cx="81" cy="43" rx="6.5" ry="4" fill="#f0a0b0" opacity="0.7"/>
+      <polygon points="60,44 72,48.5 60,53" fill="#e8c44a" stroke="#c49a30" stroke-width="1"/>
+      <polygon points="60,45 68,48 60,50" fill="#f5d980" opacity="0.6"/>
+    </svg>
+  </div>
+</div>
+<button id="pet-recall-btn" class="hidden-recall" aria-label="召唤导导" title="召唤导导">🐦</button>
 
+<script src="交我导数据.js"></script>
 <script>
-// ====== 修复：主题切换逻辑放进正确的 script 标签内 ======
+// ========== 国际化字典 ==========
+const i18n = {
+  zh: {
+    siteTitle: '交我导',
+    subtitle: '上海交通大学网站与公众号导航',
+    searchPlaceholder: '搜索学院、部门、医院或公众号',
+    tabs: ['全部', '网站', '公众号'],
+    countAll: '共 ${count} 条结果',
+    countFiltered: '${filters} · ${count} 条',
+    empty: '没有找到匹配的结果',
+    footer: '网站条目均为直达链接，主要依据 <b>上海交通大学官网「院系设置」和「机构设置」</b> 校准。<br>微信公众号仅展示已核对的搜索名称，微信内搜索时请再核对认证主体。<br><b>非官方项目</b> ，链接和机构信息会调整，更新日期：<span id="updated-at">-</span>。',
+    feedbackLabel: '意见反馈邮箱：',
+    toastCopied: '已复制：${name}',
+    directLink: '直达官网',
+    copyName: '复制名称',
+    dataError: '未加载到数据，请确认「交我导数据.js」与 HTML 在同一文件夹。',
+    petDialogues: [
+      '啾~ 迷路了吗？', '试试搜索功能吧！', '交大网站都在这里！',
+      '点击卡片直达官网~', '啾啾！需要帮助吗？', '我可以帮你找公众号！',
+      '你好呀~ 👋', '导导为你导航！', '搜一下试试看~', '这里很全哦！',
+      '啾~找到你要的了吗？', '累了就摸摸我吧~'
+    ],
+    petBubbleSearch: '在搜什么呢？🔍',
+    petBubbleSleep: 'zzZ... 有点困了呢~',
+    petBubbleHello: '啾~ 我是导导！',
+    petBubbleBack: '我回来啦~ 🎉'
+  },
+  en: {
+    siteTitle: 'SJTU Links',
+    subtitle: 'SJTU Website & WeChat Navigation',
+    searchPlaceholder: 'Search schools, departments, hospitals or accounts',
+    tabs: ['All', 'Website', 'WeChat'],
+    countAll: '${count} results',
+    countFiltered: '${filters} · ${count} results',
+    empty: 'No matching results found',
+    footer: 'Website entries are direct links, primarily based on <b>SJTU official "Schools & Departments" and "Administrative Units"</b>.<br>WeChat accounts show verified search names only; please re‑check the certified account when searching in WeChat.<br><b>Unofficial project</b>. Links and organization info may change. Last updated: <span id="updated-at">-</span>.',
+    feedbackLabel: 'Feedback email: ',
+    toastCopied: 'Copied: ${name}',
+    directLink: 'Official Site',
+    copyName: 'Copy Name',
+    dataError: 'Data not loaded. Please make sure "交我导数据.js" is in the same folder as the HTML file.',
+    petDialogues: [
+      'Chirp~ Lost?', 'Try the search!', 'All SJTU sites here!',
+      'Click cards for official sites~', 'Chirp chirp! Need help?', 'I can find WeChat accounts!',
+      'Hello there~ 👋', 'DaoDao guides you!', 'Give it a search~', 'Pretty complete here!',
+      'Chirp~ found what you need?', 'Tired? Just pet me~'
+    ],
+    petBubbleSearch: 'Searching for? 🔍',
+    petBubbleSleep: 'zzZ... getting sleepy~',
+    petBubbleHello: 'Chirp~ I am DaoDao!',
+    petBubbleBack: 'I\'m back~ 🎉'
+  }
+};
+
+let currentLang = localStorage.getItem('lang') || 'zh';
+const langSelect = document.getElementById('lang-select');
+langSelect.value = currentLang;
+
+function t(key, params = {}) {
+  let text = i18n[currentLang]?.[key] || i18n.zh[key] || key;
+  for (const [k, v] of Object.entries(params)) {
+    text = text.replace(`\$\{${k}\}`, v);
+  }
+  return text;
+}
+
+function applyLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+  document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
+  langSelect.value = lang;
+  document.getElementById('site-title').textContent = t('siteTitle');
+  document.title = t('siteTitle');
+  document.getElementById('subtitle').textContent = t('subtitle');
+  document.getElementById('search').placeholder = t('searchPlaceholder');
+  document.querySelectorAll('.type-tab').forEach((tab, i) => {
+    if (i < 3) tab.textContent = t('tabs')[i];
+  });
+  document.getElementById('data-error').textContent = t('dataError');
+  document.getElementById('empty').textContent = t('empty');
+  document.getElementById('footer-text').innerHTML = t('footer');
+  document.getElementById('feedback-label').textContent = t('feedbackLabel');
+  renderChips();
+  renderGrid();
+  updateCountDisplay();
+}
+
+langSelect.addEventListener('change', (e) => applyLanguage(e.target.value));
+
+// ====== 主题切换 ======
 const themeSelect = document.getElementById('theme-select');
 const currentTheme = localStorage.getItem('theme') || 'auto';
-
 themeSelect.value = currentTheme;
-
 themeSelect.addEventListener('change', (e) => {
   const theme = e.target.value;
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('theme', theme);
 });
 
+// ====== 数据与渲染 ======
 const items = Array.isArray(window.JIAOWODAO_DATA) ? window.JIAOWODAO_DATA : [];
 const chipsEl = document.getElementById("chips");
 const gridEl = document.getElementById("grid");
@@ -583,14 +673,14 @@ let toastTimer;
 dataErrorEl.hidden = items.length > 0;
 updatedAtEl.textContent = window.JIAOWODAO_META?.updatedAt || "未标注";
 
-function showToast(message){
+function showToast(message) {
   toastEl.textContent = message;
   toastEl.classList.add("show");
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => toastEl.classList.remove("show"), 1600);
 }
 
-function copyName(name){
+function copyName(name) {
   const input = document.createElement("textarea");
   input.value = name;
   input.style.position = "fixed";
@@ -599,57 +689,76 @@ function copyName(name){
   input.select();
   document.execCommand("copy");
   input.remove();
-  if(navigator.clipboard && window.isSecureContext){
+  if (navigator.clipboard && window.isSecureContext) {
     navigator.clipboard.writeText(name).catch(() => {});
   }
-  showToast(`已复制：${name}`);
+  showToast(t('toastCopied', { name }));
 }
 
-function getVisibleCats(){
-  const relevantItems = activeType === "all"
-    ? items
-    : items.filter(item => item.type === activeType);
-  return ["全部", ...Array.from(new Set(relevantItems.map(item => item.cat)))];
+function getItemName(item) {
+  if (currentLang === 'en' && item.name_en) return item.name_en;
+  return item.name;
+}
+function getItemCat(item) {
+  if (currentLang === 'en' && item.cat_en) return item.cat_en;
+  return item.cat;
+}
+function getItemDesc(item) {
+  if (currentLang === 'en' && item.desc_en) return item.desc_en;
+  return item.desc || '';
 }
 
-function renderChips(){
+function getVisibleCats() {
+  const relevantItems = activeType === "all" ? items : items.filter(item => item.type === activeType);
+  const catKeys = ["全部", ...Array.from(new Set(relevantItems.map(item => item.cat)))];
+  return catKeys.map(catKey => {
+    let label;
+    if (catKey === '全部') {
+      label = currentLang === 'en' ? 'All' : '全部';
+    } else {
+      const sampleItem = relevantItems.find(i => i.cat === catKey);
+      label = (currentLang === 'en' && sampleItem?.cat_en) ? sampleItem.cat_en : catKey;
+    }
+    return { key: catKey, label: label };
+  });
+}
+
+function renderChips() {
   chipsEl.innerHTML = "";
   getVisibleCats().forEach(cat => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "chip" + (cat === activeCat ? " active" : "");
-    button.textContent = cat;
-    button.setAttribute("aria-pressed", String(cat === activeCat));
-    button.addEventListener("click", () => {
-      activeCat = cat;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "chip" + (activeCat === cat.key ? " active" : "");
+    btn.textContent = cat.label;
+    btn.addEventListener("click", () => {
+      activeCat = cat.key;
       renderChips();
       renderGrid();
     });
-    chipsEl.appendChild(button);
+    chipsEl.appendChild(btn);
   });
 }
 
 document.querySelectorAll(".type-tab").forEach(tab => {
   tab.addEventListener("click", () => {
-    document.querySelectorAll(".type-tab").forEach(other => {
-      other.classList.remove("active");
-      other.setAttribute("aria-selected", "false");
+    document.querySelectorAll(".type-tab").forEach(t => {
+      t.classList.remove("active");
+      t.setAttribute("aria-selected", "false");
     });
     tab.classList.add("active");
     tab.setAttribute("aria-selected", "true");
     activeType = tab.dataset.type;
-    if(!getVisibleCats().includes(activeCat)) activeCat = "全部";
+    if (!getVisibleCats().some(cat => cat.key === activeCat)) activeCat = "全部";
     renderChips();
     renderGrid();
   });
 });
 
-searchInput.addEventListener("input", event => {
-  query = event.target.value.trim().toLowerCase();
+searchInput.addEventListener("input", () => {
+  query = searchInput.value.trim().toLowerCase();
   clearSearchButton.hidden = !query;
   renderGrid();
 });
-
 clearSearchButton.addEventListener("click", () => {
   searchInput.value = "";
   query = "";
@@ -657,117 +766,467 @@ clearSearchButton.addEventListener("click", () => {
   searchInput.focus();
   renderGrid();
 });
-
 resetFiltersButton.addEventListener("click", () => {
   activeCat = "全部";
   activeType = "all";
   query = "";
   searchInput.value = "";
   clearSearchButton.hidden = true;
-  document.querySelectorAll(".type-tab").forEach(tab => {
-    const isActive = tab.dataset.type === "all";
-    tab.classList.toggle("active", isActive);
-    tab.setAttribute("aria-selected", String(isActive));
+  document.querySelectorAll(".type-tab").forEach(t => {
+    t.classList.toggle("active", t.dataset.type === "all");
+    t.setAttribute("aria-selected", String(t.dataset.type === "all"));
   });
   renderChips();
   renderGrid();
 });
 
-document.addEventListener("keydown", event => {
-  const target = event.target;
-  const isEditing = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement;
-  if(event.key === "/" && !isEditing){
-    event.preventDefault();
-    searchInput.focus();
-  }
-  if(event.key === "Escape" && document.activeElement === searchInput && query){
-    clearSearchButton.click();
-  }
-});
-
-function renderGrid(){
-  gridEl.innerHTML = "";
-  const filtered = items.filter(item => {
-    if(activeType !== "all" && item.type !== activeType) return false;
-    if(activeCat !== "全部" && item.cat !== activeCat) return false;
-    if(query && !(item.name + " " + item.cat + " " + (item.desc || "")).toLowerCase().includes(query)) return false;
+function getFilteredItems() {
+  return items.filter(item => {
+    if (activeType !== "all" && item.type !== activeType) return false;
+    if (activeCat !== "全部" && item.cat !== activeCat) return false;
+    const name = getItemName(item).toLowerCase();
+    const cat = getItemCat(item).toLowerCase();
+    const desc = getItemDesc(item).toLowerCase();
+    if (query && !(name + " " + cat + " " + desc).includes(query)) return false;
     return true;
   });
+}
 
-  if(query){
+function updateCountDisplay() {
+  const filtered = getFilteredItems();
+  const typeLabel = activeType === "website" ? t('tabs')[1] : activeType === "wechat" ? t('tabs')[2] : "";
+  const catLabel = activeCat === "全部" ? "" : (currentLang === 'en' ? (items.find(i => i.cat === activeCat)?.cat_en || activeCat) : activeCat);
+  const stateLabels = [typeLabel, catLabel, query ? `"${query}"` : ""].filter(Boolean);
+  countEl.textContent = stateLabels.length ? t('countFiltered', { filters: stateLabels.join(" · "), count: filtered.length }) : t('countAll', { count: filtered.length });
+  resetFiltersButton.hidden = stateLabels.length === 0;
+  emptyEl.style.display = filtered.length ? "none" : "block";
+}
+
+function renderGrid() {
+  gridEl.innerHTML = "";
+  const filtered = getFilteredItems();
+  if (query) {
     filtered.sort((a, b) => {
       const score = item => {
-        const name = item.name.toLowerCase();
-        if(name.startsWith(query)) return 3;
-        if(name.includes(query)) return 2;
-        if(item.cat.toLowerCase().includes(query)) return 1;
+        const n = getItemName(item).toLowerCase();
+        if (n.startsWith(query)) return 3;
+        if (n.includes(query)) return 2;
+        if (getItemCat(item).toLowerCase().includes(query)) return 1;
         return 0;
       };
       return score(b) - score(a);
     });
   }
-
-  const typeLabel = activeType === "website" ? "网站" : activeType === "wechat" ? "公众号" : "";
-  const stateLabels = [typeLabel, activeCat === "全部" ? "" : activeCat, query ? `“${query}”` : ""].filter(Boolean);
-  countEl.textContent = stateLabels.length
-    ? `${stateLabels.join(" · ")} · ${filtered.length} 条`
-    : `共 ${filtered.length} 条结果`;
-  resetFiltersButton.hidden = stateLabels.length === 0;
-  emptyEl.style.display = filtered.length ? "none" : "block";
-
+  updateCountDisplay();
   filtered.forEach(item => {
     const card = document.createElement(item.type === "website" ? "a" : "article");
     card.className = "card";
-    if(item.type === "website"){
+    if (item.type === "website") {
       card.href = item.url;
       card.target = "_blank";
       card.rel = "noopener noreferrer";
     }
-
     const top = document.createElement("div");
     top.className = "top";
-    const name = document.createElement("div");
-    name.className = "name";
-    name.textContent = item.name;
+    const nameDiv = document.createElement("div");
+    nameDiv.className = "name";
+    nameDiv.textContent = getItemName(item);
     const badge = document.createElement("div");
     badge.className = "badge" + (item.type === "wechat" ? " wechat" : "");
-    badge.textContent = item.type === "wechat" ? "公众号" : "网站";
-    top.append(name, badge);
+    badge.textContent = item.type === "wechat" ? t('tabs')[2] : t('tabs')[1];
+    top.append(nameDiv, badge);
     card.appendChild(top);
-
-    const cat = document.createElement("div");
-    cat.className = "cat";
-    cat.textContent = item.cat;
-    card.appendChild(cat);
-
-    if(item.desc){
-      const desc = document.createElement("div");
-      desc.className = "desc";
-      desc.textContent = item.desc;
-      card.appendChild(desc);
+    const catDiv = document.createElement("div");
+    catDiv.className = "cat";
+    catDiv.textContent = getItemCat(item);
+    card.appendChild(catDiv);
+    const descText = getItemDesc(item);
+    if (descText) {
+      const descDiv = document.createElement("div");
+      descDiv.className = "desc";
+      descDiv.textContent = descText;
+      card.appendChild(descDiv);
     }
-
-    if(item.type === "website"){
+    if (item.type === "website") {
       const hint = document.createElement("div");
       hint.className = "link-hint";
-      hint.innerHTML = `<span>直达官网</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 5h5v5M19 5l-9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`;
+      hint.innerHTML = `<span>${t('directLink')}</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 5h5v5M19 5l-9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`;
       card.appendChild(hint);
-    }else{
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "copy-btn";
-      button.innerHTML = `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg><span>复制名称</span>`;
-      button.setAttribute("aria-label", `复制公众号名称 ${item.name}`);
-      button.addEventListener("click", () => copyName(item.name));
-      card.appendChild(button);
+    } else {
+      const copyBtn = document.createElement("button");
+      copyBtn.type = "button";
+      copyBtn.className = "copy-btn";
+      copyBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg><span>${t('copyName')}</span>`;
+      copyBtn.addEventListener("click", () => copyName(item.name));
+      card.appendChild(copyBtn);
     }
     gridEl.appendChild(card);
   });
 }
 
 document.querySelector('.type-tab[data-type="all"]').setAttribute("aria-selected", "true");
+applyLanguage(currentLang);
 renderChips();
 renderGrid();
+
+// ========== 小宠物逻辑 (支持移动端触摸) ==========
+(function() {
+  const wrapper = document.getElementById('site-pet-wrapper');
+  const inner = document.getElementById('site-pet-inner');
+  const closeBtn = document.getElementById('pet-close-btn');
+  const bubble = document.getElementById('pet-bubble');
+  const recallBtn = document.getElementById('pet-recall-btn');
+  const pupilLeft = document.querySelector('.pupil-left');
+  const pupilRight = document.querySelector('.pupil-right');
+
+  const STORAGE_KEY = 'jiaowodaopet_hidden';
+  const DEFAULT_BOTTOM = 24, DEFAULT_RIGHT = 24;
+  const MOBILE_BOTTOM = 14, MOBILE_RIGHT = 10;
+  const FLY_AWAY_DURATION = 550, FLY_BACK_DURATION = 700, FLY_AWAY_DELAY = 1800;
+  const TAP_THRESHOLD = 8;
+
+  let isDragging = false, dragStartX, dragStartY, petStartLeft, petStartTop;
+  let currentLeft, currentTop, usesLeftTop = false;
+  let bubbleTimer, autoActionTimer, idleTimer;
+  let lastInteraction = Date.now();
+  let isFlying = false;
+  let defaultLeft, defaultTop;
+  let clickTimer = null;
+  let touchStartTime, touchMoved = false;
+
+  function getDialogues() {
+    return i18n[currentLang]?.petDialogues || i18n.zh.petDialogues;
+  }
+  function isMobile() { return window.innerWidth <= 640; }
+  function getDefaultRight() { return isMobile() ? MOBILE_RIGHT : DEFAULT_RIGHT; }
+  function getDefaultBottom() { return isMobile() ? MOBILE_BOTTOM : DEFAULT_BOTTOM; }
+
+  function setDefaultPosition() {
+    wrapper.style.right = getDefaultRight() + 'px';
+    wrapper.style.bottom = getDefaultBottom() + 'px';
+    wrapper.style.left = 'auto'; wrapper.style.top = 'auto';
+    usesLeftTop = false;
+    const rect = wrapper.getBoundingClientRect();
+    defaultLeft = rect.left; defaultTop = rect.top;
+  }
+  function switchToLeftTop() {
+    if (!usesLeftTop) {
+      const rect = wrapper.getBoundingClientRect();
+      currentLeft = rect.left; currentTop = rect.top;
+      wrapper.style.left = currentLeft + 'px'; wrapper.style.top = currentTop + 'px';
+      wrapper.style.right = 'auto'; wrapper.style.bottom = 'auto';
+      usesLeftTop = true;
+    }
+  }
+  function clampPosition(left, top) {
+    const w = wrapper.offsetWidth, h = wrapper.offsetHeight;
+    return { left: Math.max(0, Math.min(left, window.innerWidth - w)), top: Math.max(0, Math.min(top, window.innerHeight - h)) };
+  }
+
+  function showBubble(text, duration = 2200) {
+    if (bubbleTimer) clearTimeout(bubbleTimer);
+    bubble.textContent = text;
+    bubble.classList.add('show');
+    bubbleTimer = setTimeout(() => { bubble.classList.remove('show'); bubbleTimer = null; }, duration);
+  }
+  function hideBubble() {
+    if (bubbleTimer) clearTimeout(bubbleTimer);
+    bubble.classList.remove('show'); bubbleTimer = null;
+  }
+  function flapWings() {
+    if (inner.classList.contains('flap-wings')) return;
+    inner.classList.add('flap-wings');
+    setTimeout(() => inner.classList.remove('flap-wings'), 380);
+  }
+  function wingsOut() { inner.classList.add('wings-out'); }
+  function wingsRest() { inner.classList.remove('wings-out'); }
+
+  function randomDialogue() {
+    const arr = getDialogues();
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  function resetIdleTimer() {
+    lastInteraction = Date.now();
+    if (idleTimer) clearTimeout(idleTimer);
+    idleTimer = setTimeout(checkIdle, 25000);
+  }
+  function checkIdle() {
+    if (Date.now() - lastInteraction >= 24000 && !isDragging && !isFlying) {
+      showBubble(i18n[currentLang]?.petBubbleSleep || 'zzZ... 有点困了呢~', 2800);
+      setTimeout(() => wingsOut(), 400);
+      setTimeout(() => wingsRest(), 1200);
+    }
+    idleTimer = setTimeout(checkIdle, 25000);
+  }
+  function scheduleAutoAction() {
+    if (autoActionTimer) clearTimeout(autoActionTimer);
+    autoActionTimer = setTimeout(() => {
+      if (!isDragging && !isFlying && Date.now() - lastInteraction > 8000) {
+        const r = Math.random();
+        if (r < 0.5) flapWings();
+        else if (r < 0.8) showBubble(randomDialogue(), 2400);
+        else { wingsOut(); setTimeout(() => wingsRest(), 600); }
+      }
+      scheduleAutoAction();
+    }, 14000 + Math.random() * 20000);
+  }
+
+  function entranceAnimation() {
+    setDefaultPosition();
+    wrapper.style.transition = 'none';
+    wrapper.style.transform = 'translateX(120px)';
+    wrapper.style.opacity = '0';
+    usesLeftTop = false;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        wrapper.style.transition = 'transform 0.65s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease';
+        wrapper.style.transform = 'translateX(0)';
+        wrapper.style.opacity = '1';
+        setTimeout(() => {
+          wrapper.style.transition = 'none';
+          const rect = wrapper.getBoundingClientRect();
+          defaultLeft = rect.left; defaultTop = rect.top;
+          flapWings();
+          setTimeout(() => showBubble(i18n[currentLang]?.petBubbleHello || '啾~ 我是导导！', 2400), 500);
+        }, 700);
+      });
+    });
+  }
+
+  function flyAwayAndBack() {
+    if (isFlying) return;
+    isFlying = true;
+    hideBubble();
+    wingsOut();
+    switchToLeftTop();
+    const flyTarget = window.innerWidth + 150;
+    wrapper.classList.add('flying-away');
+    wrapper.style.transform = `translateX(${flyTarget - currentLeft}px) translateY(-60px)`;
+    wrapper.style.opacity = '0.35';
+    setTimeout(() => {
+      wrapper.classList.remove('flying-away');
+      wrapper.classList.add('flying-back');
+      wrapper.style.transition = 'none';
+      wrapper.style.transform = `translateX(${flyTarget - currentLeft}px) translateY(-50px)`;
+      wrapper.style.opacity = '0.3';
+      setDefaultPosition();
+      usesLeftTop = false;
+      const rect = wrapper.getBoundingClientRect();
+      currentLeft = rect.left; currentTop = rect.top;
+      defaultLeft = currentLeft; defaultTop = currentTop;
+      usesLeftTop = true;
+      wrapper.style.left = currentLeft + 'px'; wrapper.style.top = currentTop + 'px';
+      wrapper.style.right = 'auto'; wrapper.style.bottom = 'auto';
+      requestAnimationFrame(() => {
+        wrapper.classList.remove('flying-back');
+        wrapper.classList.add('flying-back');
+        wrapper.style.transition = 'transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.5s ease';
+        wrapper.style.transform = 'translateX(0) translateY(0)';
+        wrapper.style.opacity = '1';
+      });
+      setTimeout(() => {
+        wrapper.classList.remove('flying-back');
+        wrapper.style.transition = 'none';
+        wrapper.style.transform = ''; wrapper.style.opacity = '';
+        wingsRest(); isFlying = false;
+        flapWings();
+        showBubble(i18n[currentLang]?.petBubbleBack || '我回来啦~ 🎉', 2000);
+        resetIdleTimer();
+      }, FLY_BACK_DURATION + 50);
+    }, FLY_AWAY_DURATION + FLY_AWAY_DELAY);
+  }
+
+  function handleTap(isDouble = false) {
+    if (isDouble) {
+      flyAwayAndBack();
+      return;
+    }
+    flapWings();
+    showBubble(randomDialogue(), 2200);
+    wrapper.classList.add('bounce-release');
+    wrapper.style.transform = 'translateY(-14px)';
+    setTimeout(() => { wrapper.style.transform = 'translateY(0)'; setTimeout(() => { wrapper.classList.remove('bounce-release'); wrapper.style.transform = ''; }, 350); }, 100);
+    resetIdleTimer();
+  }
+
+  // 统一点击处理（桌面 click + 移动端 touch 模拟）
+  function onInteractionStart(e) {
+    if (isFlying || e.target === closeBtn) return;
+    if (clickTimer) {
+      clearTimeout(clickTimer);
+      clickTimer = null;
+      handleTap(true);
+    } else {
+      clickTimer = setTimeout(() => {
+        clickTimer = null;
+        handleTap(false);
+      }, 280);
+    }
+  }
+
+  // 桌面端点击
+  wrapper.addEventListener('click', (e) => {
+    if (isDragging || e.target === closeBtn || isFlying) return;
+    // 防止与 touch 事件重复触发（移动端 touch 优先）
+    if (e.pointerType === 'touch') return;
+    onInteractionStart(e);
+  });
+
+  // 移动端触摸支持
+  wrapper.addEventListener('touchstart', (e) => {
+    if (isFlying || e.target === closeBtn) return;
+    touchStartTime = Date.now();
+    touchMoved = false;
+    // 不在这里 preventDefault，避免干扰滚动（仅在拖拽时阻止）
+  }, { passive: true });
+
+  wrapper.addEventListener('touchmove', () => {
+    touchMoved = true;
+  }, { passive: true });
+
+  wrapper.addEventListener('touchend', (e) => {
+    if (isFlying || e.target === closeBtn) return;
+    if (touchMoved || Date.now() - touchStartTime > 300) return;
+    e.preventDefault(); // 防止后续 click 事件
+    onInteractionStart(e);
+  });
+
+  // 关闭按钮
+  closeBtn.addEventListener('click', (e) => { e.stopPropagation(); e.preventDefault(); hidePet(); });
+  closeBtn.addEventListener('touchend', (e) => { e.stopPropagation(); e.preventDefault(); hidePet(); });
+
+  function hidePet() {
+    wrapper.classList.add('hidden-pet');
+    recallBtn.classList.remove('hidden-recall');
+    const r = getDefaultRight(), b = getDefaultBottom();
+    recallBtn.style.right = (r + 8) + 'px'; recallBtn.style.bottom = (b + 8) + 'px';
+    localStorage.setItem(STORAGE_KEY, '1');
+    hideBubble();
+    if (autoActionTimer) clearTimeout(autoActionTimer);
+    if (idleTimer) clearTimeout(idleTimer);
+  }
+  function showPet() {
+    wrapper.classList.remove('hidden-pet');
+    recallBtn.classList.add('hidden-recall');
+    localStorage.removeItem(STORAGE_KEY);
+    setDefaultPosition();
+    wrapper.style.transform = ''; wrapper.style.opacity = ''; wrapper.style.transition = 'none';
+    wrapper.classList.remove('flying-away','flying-back','bounce-release');
+    wingsRest(); isFlying = false;
+    entranceAnimation();
+    scheduleAutoAction();
+    idleTimer = setTimeout(checkIdle, 25000);
+    resetIdleTimer();
+  }
+  recallBtn.addEventListener('click', showPet);
+  recallBtn.addEventListener('touchend', (e) => { e.preventDefault(); showPet(); });
+
+  // 拖拽（支持鼠标和触摸）
+  function onDragStart(e) {
+    if (isFlying || e.target === closeBtn) return;
+    const isTouch = e.type === 'touchstart';
+    if (isTouch && e.touches.length > 1) return;
+    isDragging = true;
+    wrapper.classList.add('dragging');
+    hideBubble();
+    if (clickTimer) { clearTimeout(clickTimer); clickTimer = null; }
+    wingsOut();
+    switchToLeftTop();
+    const clientX = isTouch ? e.touches[0].clientX : e.clientX;
+    const clientY = isTouch ? e.touches[0].clientY : e.clientY;
+    dragStartX = clientX;
+    dragStartY = clientY;
+    petStartLeft = currentLeft;
+    petStartTop = currentTop;
+    if (isTouch) e.preventDefault();
+    resetIdleTimer();
+  }
+
+  wrapper.addEventListener('mousedown', onDragStart);
+  wrapper.addEventListener('touchstart', (e) => {
+    // 拖拽的 touchstart 需要主动监听并可能阻止默认
+    if (isFlying || e.target === closeBtn) return;
+    onDragStart(e);
+  }, { passive: false });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const clamped = clampPosition(petStartLeft + e.clientX - dragStartX, petStartTop + e.clientY - dragStartY);
+    currentLeft = clamped.left; currentTop = clamped.top;
+    wrapper.style.left = currentLeft + 'px'; wrapper.style.top = currentTop + 'px';
+    wrapper.style.transition = 'none';
+  });
+  document.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const touch = e.touches[0];
+    const clamped = clampPosition(petStartLeft + touch.clientX - dragStartX, petStartTop + touch.clientY - dragStartY);
+    currentLeft = clamped.left; currentTop = clamped.top;
+    wrapper.style.left = currentLeft + 'px'; wrapper.style.top = currentTop + 'px';
+    wrapper.style.transition = 'none';
+    e.preventDefault();
+  }, { passive: false });
+
+  function onDragEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    wrapper.classList.remove('dragging');
+    wingsRest();
+    wrapper.classList.add('bounce-release');
+    wrapper.style.transform = 'translateY(-6px)';
+    setTimeout(() => { wrapper.style.transform = 'translateY(0)'; setTimeout(() => { wrapper.classList.remove('bounce-release'); wrapper.style.transform = ''; }, 350); }, 60);
+    resetIdleTimer();
+    defaultLeft = currentLeft; defaultTop = currentTop;
+  }
+  document.addEventListener('mouseup', onDragEnd);
+  document.addEventListener('touchend', onDragEnd);
+
+  // 瞳孔跟随
+  let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
+  document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; if (!isDragging) updatePupils(); });
+  document.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; if (!isDragging) updatePupils(); }
+  }, { passive: true });
+  function updatePupils() {
+    if (!usesLeftTop) { const rect = wrapper.getBoundingClientRect(); currentLeft = rect.left; currentTop = rect.top; }
+    const petCenterX = currentLeft + wrapper.offsetWidth/2, petCenterY = currentTop + wrapper.offsetHeight/2;
+    const dx = mouseX - petCenterX, dy = mouseY - petCenterY, dist = Math.sqrt(dx*dx+dy*dy);
+    const factor = Math.min(dist/280, 1) * 2.2;
+    const angle = Math.atan2(dy, dx);
+    const ox = Math.cos(angle)*factor, oy = Math.sin(angle)*factor;
+    if (pupilLeft) { pupilLeft.setAttribute('cx', 47+ox); pupilLeft.setAttribute('cy', 34.5+oy); }
+    if (pupilRight) { pupilRight.setAttribute('cx', 69+ox); pupilRight.setAttribute('cy', 34.5+oy); }
+  }
+
+  // 搜索框聚焦
+  searchInput.addEventListener('focus', () => {
+    if (!wrapper.classList.contains('hidden-pet') && !isFlying && !isDragging) {
+      wrapper.style.transition = 'transform 0.3s ease';
+      wrapper.style.transform = 'rotate(-8deg)';
+      setTimeout(() => { wrapper.style.transform = 'rotate(-4deg)'; setTimeout(() => { wrapper.style.transform = 'rotate(0deg)'; setTimeout(() => { wrapper.style.transition = 'none'; wrapper.style.transform = ''; }, 300); }, 200); }, 250);
+      showBubble(i18n[currentLang]?.petBubbleSearch || '在搜什么呢？🔍', 1800);
+      resetIdleTimer();
+    }
+  });
+
+  // 初始化
+  function initPet() {
+    const hidden = localStorage.getItem(STORAGE_KEY) === '1';
+    if (hidden) {
+      wrapper.classList.add('hidden-pet');
+      recallBtn.classList.remove('hidden-recall');
+      const r = getDefaultRight(), b = getDefaultBottom();
+      recallBtn.style.right = (r+8)+'px'; recallBtn.style.bottom = (b+8)+'px';
+    } else {
+      setDefaultPosition();
+      wrapper.style.opacity = '0'; wrapper.style.transform = 'translateX(120px)'; wrapper.style.transition = 'none';
+      setTimeout(() => entranceAnimation(), 1200);
+      scheduleAutoAction();
+      idleTimer = setTimeout(checkIdle, 25000);
+    }
+  }
+  initPet();
+})();
 </script>
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </body>
