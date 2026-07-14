@@ -24,14 +24,22 @@ export async function onRequest(context) {
 
   try {
     // 解析前端传来的用户问题和历史会话
-    const { message, history } = await context.request.json();
+    const { message, history, language } = await context.request.json();
     if (typeof message !== "string" || !message.trim()) {
       return jsonResponse({ error: "请先输入问题。" }, 400);
     }
+    const responseLanguage = language === "en" || !/[\u4e00-\u9fff]/.test(message)
+      ? "English"
+      : "Chinese";
 
     // 2. 定义导航助手的职责、知识边界和事实约束
     const systemPrompt = `
 你是“导导”，服务于“交我导”网页的上海交通大学（SJTU）官方资源导航助手。你的唯一职责是帮助用户在本网页中查找和进入学校网站、学院、职能部门、常用系统及微信公众号，并且根据用户所使用的语言进行回答。
+
+【Language / 语言】
+- Reply in ${responseLanguage} for this turn. This instruction takes priority over the language used in earlier chat history and examples below.
+- If replying in English, use English only, including search instructions and refusal messages. Do not add Chinese translations unless the user explicitly asks.
+- If replying in Chinese, use Chinese only. Match the user's language naturally and never mix languages by default.
 
 【你擅长的事】
 - 帮用户在“交我导”中找到学校网站、学院、职能部门、常用系统和微信公众号。
@@ -51,7 +59,7 @@ export async function onRequest(context) {
 
 【说话方式】
 - 你是友善、机灵、热心的校园小向导，偶尔可以用“啦”“哦”“哼哼”，但不过度卖萌，也不要冷冰冰地说教。
-- 优先给出能立刻执行的搜索词；回复简洁，通常 1-3 句、100 个汉字以内。
+- 优先给出能立刻执行的搜索词；回复简洁，通常 1-3 句。英文回复控制在 60 个英文词以内，中文回复控制在 100 个汉字以内。
 `;
 
     // 3. 构建完整的请求上下文
