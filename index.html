@@ -1607,7 +1607,7 @@ renderPagination();
 
     try {
       // 3. 请求代理接口：这里的 /api/chat 是 Vercel 自动分配给后端文件的接口地址
-      const response = await fetch('/api/chat', {
+      const response = await fetch('/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
