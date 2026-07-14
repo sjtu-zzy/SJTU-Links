@@ -3,7 +3,7 @@ export async function onRequest(context) {
   // 1. 安全提取 Cloudflare Pages 后台设置的环境变量
   const apiKey = context.env.AI_API_KEY;
   const apiUrl = context.env.AI_API_URL;
-  const model = context.env.AI_MODEL || "gpt-4o-mini";
+  const model = context.env.AI_MODEL;
 
   // 跨域处理与错误保护
   if (!apiKey || !apiUrl) {
