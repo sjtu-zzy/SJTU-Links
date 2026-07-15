@@ -1,5 +1,5 @@
 
-<h1 align="center">交我导（SJTU Navigator）</h1>
+<h1 align="center">交我导（SJTU Links）</h1>
 
 <p align="center">
   上海交通大学官方网站与微信公众号导航平台
