@@ -1,6 +1,3 @@
-<p align="center">
-  <img src="docs/home.png" alt="交我导首页" width="100%">
-</p>
 
 <h1 align="center">交我导（SJTU Navigator）</h1>
 
