@@ -1643,6 +1643,7 @@ renderPagination();
         // 限制历史记录上限，防止上下文请求体过大
         if (chatHistory.length > 10) chatHistory.splice(0, 2);
       } else {
+        console.error('AI chat request failed', { status: response.status, body: data });
         appendMessage(data.error || `请求失败（${response.status}），请稍后重试`, 'error');
       }
 

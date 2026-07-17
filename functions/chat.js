@@ -114,7 +114,8 @@ export async function onRequest(context) {
       return jsonResponse({
         error: "AI 服务未返回有效回复。",
         upstreamShape: summarizeResponseShape(data),
-        textPaths: collectTextPaths(data)
+        textPaths: collectTextPaths(data),
+        upstreamPreview: sanitizeResponsePreview(responseText)
       }, 502);
     }
 
@@ -282,4 +283,10 @@ function collectTextPaths(value, path = "$", paths = [], seen = new Set()) {
   });
 
   return paths;
+}
+
+function sanitizeResponsePreview(text) {
+  return text
+    .replace(/"(api[_-]?key|access[_-]?token|authorization|token|key)"\s*:\s*"[^"]+"/gi, '"$1":"[redacted]"')
+    .slice(0, 1200);
 }
