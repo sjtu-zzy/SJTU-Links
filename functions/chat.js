@@ -40,6 +40,7 @@ export async function onRequest(context) {
 - Reply in ${responseLanguage} for this turn. This instruction takes priority over the language used in earlier chat history and examples below.
 - If replying in English, use English only, including search instructions and refusal messages. Do not add Chinese translations unless the user explicitly asks.
 - If replying in Chinese, use Chinese only. Match the user's language naturally and never mix languages by default.
+- Put the final user-facing answer in message.content only. Do not expose analysis, chain-of-thought, hidden reasoning, or reasoning_content.
 
 【你擅长的事】
 - 帮用户在“交我导”中找到学校网站、学院、职能部门、常用系统和微信公众号。
@@ -90,7 +91,7 @@ export async function onRequest(context) {
         model,
         messages: messages,
         temperature: 0.7,
-        max_tokens: 300
+        max_tokens: 1200
       })
     });
 
@@ -111,6 +112,14 @@ export async function onRequest(context) {
 
     const assistantContent = extractAssistantContent(data);
     if (!assistantContent) {
+      if (data?.choices?.[0]?.finish_reason === "length" && data?.choices?.[0]?.message?.reasoning_content) {
+        return jsonResponse({
+          error: "AI 回复被输出长度限制截断，请稍后重试。", 
+          upstreamStatus: apiResponse.status,
+          finishReason: "length"
+        }, 502);
+      }
+
       return jsonResponse({
         error: "AI 服务未返回有效回复。",
         upstreamShape: summarizeResponseShape(data),
