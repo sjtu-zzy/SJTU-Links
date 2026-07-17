@@ -113,7 +113,8 @@ export async function onRequest(context) {
     if (!assistantContent) {
       return jsonResponse({
         error: "AI 服务未返回有效回复。",
-        upstreamShape: summarizeResponseShape(data)
+        upstreamShape: summarizeResponseShape(data),
+        textPaths: collectTextPaths(data)
       }, 502);
     }
 
@@ -152,32 +153,101 @@ function jsonResponse(body, status) {
 }
 
 function extractAssistantContent(data) {
-  const candidates = [
-    data?.choices?.[0]?.message?.content,
-    data?.choices?.[0]?.text,
-    data?.output_text,
-    data?.message?.content,
-    data?.message,
-    data?.content,
-    data?.text,
-    data?.response,
-    data?.answer,
-    data?.reply,
-    data?.data?.choices?.[0]?.message?.content,
-    data?.data?.output_text,
-    data?.data?.message?.content,
-    data?.data?.message,
-    data?.data?.content,
-    data?.data?.text,
-    data?.data?.response,
-    data?.data?.answer,
-    data?.data?.reply,
-    data?.candidates?.[0]?.content?.parts?.map((part) => part?.text).filter(Boolean).join(""),
-    data?.data?.candidates?.[0]?.content?.parts?.map((part) => part?.text).filter(Boolean).join("")
-  ];
+  const roots = [data, data?.data, data?.result, data?.response];
+  const candidates = [];
 
-  const content = candidates.find((value) => typeof value === "string" && value.trim());
-  return content ? content.trim() : "";
+  for (const root of roots) {
+    if (!root) continue;
+    candidates.push(
+      root?.choices?.[0]?.message?.content,
+      root?.choices?.[0]?.delta?.content,
+      root?.choices?.[0]?.text,
+      root?.choices?.[0]?.content,
+      root?.output_text,
+      root?.message?.content,
+      root?.message,
+      root?.content,
+      root?.text,
+      root?.answer,
+      root?.reply,
+      root?.completion,
+      root?.generated_text
+    );
+    candidates.push(extractFromOutputArray(root?.output));
+    candidates.push(extractFromCandidateArray(root?.candidates));
+  }
+
+  candidates.push(findTextByPreferredKeys(data));
+
+  for (const candidate of candidates) {
+    const content = normalizeText(candidate);
+    if (content) return content;
+  }
+
+  return "";
+}
+
+function normalizeText(value) {
+  if (typeof value === "string") {
+    return value.trim();
+  }
+
+  if (Array.isArray(value)) {
+    return value.map(normalizeText).filter(Boolean).join("").trim();
+  }
+
+  if (value && typeof value === "object") {
+    return normalizeText(value.text || value.content || value.output_text || value.answer || value.reply);
+  }
+
+  return "";
+}
+
+function extractFromOutputArray(output) {
+  if (!Array.isArray(output)) return "";
+  return output.map((item) => normalizeText(item?.content || item?.text || item)).filter(Boolean).join("").trim();
+}
+
+function extractFromCandidateArray(candidates) {
+  if (!Array.isArray(candidates)) return "";
+  return candidates.map((candidate) => {
+    const parts = candidate?.content?.parts;
+    if (Array.isArray(parts)) {
+      return parts.map((part) => part?.text).filter(Boolean).join("");
+    }
+    return normalizeText(candidate?.content || candidate?.text || candidate);
+  }).filter(Boolean).join("").trim();
+}
+
+function findTextByPreferredKeys(value, seen = new Set()) {
+  const preferredKeys = new Set([
+    "content", "text", "output_text", "response", "answer", "reply", "message", "completion", "generated_text", "result"
+  ]);
+
+  if (!value || typeof value !== "object" || seen.has(value)) return "";
+  seen.add(value);
+
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      const found = findTextByPreferredKeys(item, seen);
+      if (found) return found;
+    }
+    return "";
+  }
+
+  for (const [key, child] of Object.entries(value)) {
+    if (preferredKeys.has(key)) {
+      const direct = normalizeText(child);
+      if (direct) return direct;
+    }
+  }
+
+  for (const child of Object.values(value)) {
+    const found = findTextByPreferredKeys(child, seen);
+    if (found) return found;
+  }
+
+  return "";
 }
 
 function summarizeResponseShape(value) {
@@ -189,4 +259,27 @@ function summarizeResponseShape(value) {
     key,
     Array.isArray(child) ? `array(${child.length})` : typeof child
   ]));
+}
+
+function collectTextPaths(value, path = "$", paths = [], seen = new Set()) {
+  if (paths.length >= 12 || value === null || value === undefined) return paths;
+
+  if (typeof value === "string") {
+    if (value.trim()) paths.push(`${path}: ${value.trim().slice(0, 80)}`);
+    return paths;
+  }
+
+  if (typeof value !== "object" || seen.has(value)) return paths;
+  seen.add(value);
+
+  if (Array.isArray(value)) {
+    value.slice(0, 5).forEach((item, index) => collectTextPaths(item, `${path}[${index}]`, paths, seen));
+    return paths;
+  }
+
+  Object.entries(value).slice(0, 12).forEach(([key, child]) => {
+    collectTextPaths(child, `${path}.${key}`, paths, seen);
+  });
+
+  return paths;
 }
