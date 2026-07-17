@@ -109,12 +109,28 @@ export async function onRequest(context) {
       }, apiResponse.status >= 400 && apiResponse.status < 600 ? apiResponse.status : 502);
     }
 
-    if (!data?.choices?.[0]?.message?.content) {
-      return jsonResponse({ error: "AI 服务未返回有效回复。" }, 502);
+    const assistantContent = extractAssistantContent(data);
+    if (!assistantContent) {
+      return jsonResponse({
+        error: "AI 服务未返回有效回复。",
+        upstreamShape: summarizeResponseShape(data)
+      }, 502);
     }
 
-    // 5. 将大模型的结果返回给前端
-    return new Response(JSON.stringify(data), {
+    // 5. 将上游结果规范化为前端期望的 OpenAI chat completions 格式
+    const normalizedData = {
+      ...data,
+      choices: [{
+        ...(data?.choices?.[0] || {}),
+        message: {
+          ...(data?.choices?.[0]?.message || {}),
+          role: data?.choices?.[0]?.message?.role || "assistant",
+          content: assistantContent
+        }
+      }]
+    };
+
+    return new Response(JSON.stringify(normalizedData), {
       status: apiResponse.status,
       headers: corsHeaders
     });
@@ -133,4 +149,44 @@ const corsHeaders = {
 
 function jsonResponse(body, status) {
   return new Response(JSON.stringify(body), { status, headers: corsHeaders });
+}
+
+function extractAssistantContent(data) {
+  const candidates = [
+    data?.choices?.[0]?.message?.content,
+    data?.choices?.[0]?.text,
+    data?.output_text,
+    data?.message?.content,
+    data?.message,
+    data?.content,
+    data?.text,
+    data?.response,
+    data?.answer,
+    data?.reply,
+    data?.data?.choices?.[0]?.message?.content,
+    data?.data?.output_text,
+    data?.data?.message?.content,
+    data?.data?.message,
+    data?.data?.content,
+    data?.data?.text,
+    data?.data?.response,
+    data?.data?.answer,
+    data?.data?.reply,
+    data?.candidates?.[0]?.content?.parts?.map((part) => part?.text).filter(Boolean).join(""),
+    data?.data?.candidates?.[0]?.content?.parts?.map((part) => part?.text).filter(Boolean).join("")
+  ];
+
+  const content = candidates.find((value) => typeof value === "string" && value.trim());
+  return content ? content.trim() : "";
+}
+
+function summarizeResponseShape(value) {
+  if (!value || typeof value !== "object") {
+    return typeof value;
+  }
+
+  return Object.fromEntries(Object.entries(value).slice(0, 8).map(([key, child]) => [
+    key,
+    Array.isArray(child) ? `array(${child.length})` : typeof child
+  ]));
 }
