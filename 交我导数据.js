@@ -28,6 +28,9 @@ window.JIAOWODAO_DATA = [
   {name:"水源社区", name_en:"Shuiyuan Community", cat:"综合门户", cat_en:"General Portals", type:"website", url:"https://shuiyuan.sjtu.edu.cn/", desc:"校园社区", desc_en:"Campus community"},
   {name:"交大地图", name_en:"SJTU Map", cat:"综合门户", cat_en:"General Portals", type:"website", url:"http://map.sjtu.edu.cn/", desc:"校园地图与地点查询", desc_en:"Campus map and location search"},
   {name:"信息公开网", name_en:"Information Disclosure", cat:"综合门户", cat_en:"General Portals", type:"website", url:"http://gk.sjtu.edu.cn/", desc:"学校信息公开", desc_en:"University information disclosure"},
+  {name:"SJTU选课社区", name_en:"SJTU Course Selection Community", cat:"综合门户", cat_en:"General Portals", type:"website", url:"https://course.sjtu.plus/", desc:"课程点评社区", desc_en:"Course Review Community"},
+  {name:"传承·交大", name_en:"Share SJTU", cat:"综合门户", cat_en:"General Portals", type:"website", url:"https://share.dyweb.sjtu.cn/", desc:"课程资料分享", desc_en:"Course Materials Sharing"},
+
 
   // 职能部门
   {name:"党政办公室", name_en:"Party & Administration Office", cat:"职能部门", cat_en:"Administrative Departments", type:"website", url:"http://dzb.sjtu.edu.cn/", desc:"", desc_en:""},
