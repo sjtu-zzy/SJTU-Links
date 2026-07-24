@@ -1,7 +1,7 @@
 /*
  * 交我导数据文件
  *
- * 日常维护只需修改本文件，交我导.html 无需改动。
+ * 页面展示只需修改本文件；如需同步 AI 目录知识，再运行 node scripts/compile-directory-knowledge.mjs。
  * 网站格式：{name:"名称", name_en:"English Name", cat:"分类", cat_en:"English Category", type:"website", url:"官网地址", desc:"说明", desc_en:"English Description"}
  * 公众号格式：{name:"微信内搜索名称", name_en:"微信内搜索名称(与name相同，保持中文)", cat:"分类", cat_en:"English Category", type:"wechat", desc:"说明", desc_en:"English Description"}
  * 公众号的name_en字段必须与name完全一致（保留中文），以确保英文模式下公众号名称仍显示中文。

@@ -2,11 +2,11 @@
 <h1 align="center">交我导（SJTU Links）</h1>
 
 <p align="center">
-  上海交通大学官方网站与微信公众号导航平台
+  上海交通大学网站、微信公众号与学生社团导航平台
 </p>
 
 <p align="center">
-  一个简洁、美观、响应式的校园资源导航网站，帮助师生快速访问学校各类官方网站与微信公众号。
+  一个简洁、美观、响应式的校园资源导航网站，帮助师生快速访问学校网站、微信公众号与学生社团资料。
 </p>
 
 <p align="center">
@@ -23,9 +23,9 @@
 
 **交我导（SJTU Links）** 是一个面向上海交通大学师生打造的校园资源导航网站。
 
-项目收录了学校官方网站、学院网站、行政部门、科研机构、附属医院、公共服务平台以及微信公众号等资源，并提供搜索、分类浏览、中英文切换、深浅色模式、AI 助手等功能。
+项目收录了学校官方网站、学院网站、行政部门、科研机构、附属医院、公共服务平台、微信公众号与学生社团等资源，并提供搜索、分类浏览、中英文切换、深浅色模式、AI 助手等功能。
 
-本项目采用 **原生 HTML + CSS + JavaScript** 开发，无需任何前端框架，也无需后端服务器，可直接部署至 GitHub Pages、Cloudflare Pages、Vercel 等静态网站托管平台。
+本项目采用 **原生 HTML + CSS + JavaScript** 开发，无需任何前端框架。导航功能可直接部署至 GitHub Pages、Cloudflare Pages、Vercel 等静态网站托管平台；AI 助手需要额外部署 Cloudflare Pages Functions 并配置模型环境变量。
 
 ---
 
@@ -123,15 +123,28 @@ https://sjtu-links.pages.dev/
 
 ## 🤖 AI 助手
 
-集成 AI 聊天窗口，可接入任意兼容 OpenAI API 的模型，例如：
+集成基于工具调用的小型目录 Agent。页面中的 303 条资源会被编译为统一知识文件，模型通过 `grep_directory` 工具检索事实后再回答，不再依赖前端候选或模型记忆猜测。
+
+模型接口需要兼容 OpenAI Chat Completions 与 function/tool calling，例如：
 
 - GPT
 - DeepSeek
 - Qwen
 - Claude（兼容接口）
-- 其他 OpenAI Compatible API
+- 其他支持工具调用的 OpenAI Compatible API
 
-便于快速咨询校园相关问题。
+Agent 可以统一查询网站、学院、职能部门、常用系统、微信公众号与社团的名称、网址、用途、星级和联系方式。目录未命中时会明确提示，不会补造资料。
+
+---
+
+## 🎭 社团导航
+
+- 独立的社团类型筛选
+- 五星、四星、三星、其他社团筛选
+- 社团官网直达
+- 微信公众号名称复制
+- QQ 群号复制与时效提示
+- AI 助手通过统一目录工具查询社团联系方式
 
 ---
 
@@ -164,16 +177,14 @@ https://sjtu-links.pages.dev/
 
 ---
 
-## 📄 分页浏览
+## 📄 无限滚动
 
 支持：
 
-- 首页
-- 上一页
-- 页码跳转
-- 下一页
-- 末页
-- 每页数量切换
+- 初始加载五行
+- 接近页面底部时静默加载
+- 搜索和筛选后自动重置列表
+- 桌面与移动端按列数计算批次
 
 ---
 
@@ -197,11 +208,17 @@ https://sjtu-links.pages.dev/
 │   ├── dark.png             # 深色模式截图
 │   └── mobile.png           # 移动端截图
 │
-├── function/
-│   └── chat.js              # AI 助手逻辑
+├── functions/
+│   ├── chat.js                         # 目录 Agent 编排
+│   ├── directory-search.js             # grep_directory 工具
+│   └── directory-knowledge.generated.js # 编译后的统一目录知识
 │
-├── index.html               # 网站入口
-├── 交我导数据.js             # 导航数据
+├── scripts/
+│   └── compile-directory-knowledge.mjs # 目录知识编译器
+│
+├── index.html                          # 网站入口
+├── 交我导数据.js                        # 网站与公众号数据
+├── 交我导社团数据.js                     # 社团导航数据
 ├── README.md
 └── LICENSE
 ```
@@ -247,6 +264,24 @@ python -m http.server
 ```
 http://localhost:8000
 ```
+
+## 本地测试 AI Agent
+
+AI 助手需要使用 Wrangler 启动 Pages Functions，不能只用 `python -m http.server`。
+
+1. 复制 `.dev.vars.example` 为 `.dev.vars`，填写 `AI_API_KEY`、`AI_API_URL` 和支持工具调用的 `AI_MODEL`。
+2. 使用以下命令启动本地 Pages：
+
+```bash
+wrangler pages dev . \
+  --port 8788 \
+  --compatibility-date 2026-05-01 \
+  --env-file .dev.vars
+```
+
+3. 打开 `http://127.0.0.1:8788/`，或直接请求 `http://127.0.0.1:8788/chat`。
+
+`.dev.vars` 已加入 `.gitignore`，不要提交其中的密钥。当前 Agent 要求模型兼容 OpenAI Chat Completions 的 `tools` / function calling。
 
 ---
 
@@ -303,7 +338,38 @@ main
 }
 ```
 
-新增数据后刷新网页即可生效。
+社团示例：
+
+```javascript
+{
+    name: "国学社",
+    name_en: "国学社",
+    type: "club",
+    cat: "五星社团",
+    cat_en: "Five-star Clubs",
+    rating: 5,
+    websiteUrl: "https://sjtuguoxue.space/",
+    wechatName: "上海交大国学社",
+    qqGroups: ["709881123"],
+    qqNote: null
+}
+```
+
+社团资料为一次性整理快照，星级和联系方式日期记录在 `交我导社团数据.js` 的 `JIAOWODAO_CLUB_META` 中。QQ群信息可能过时，使用前请再次核对。
+
+修改数据后，页面刷新即可生效；要让 AI Agent 同步使用最新目录，还需重新编译知识文件：
+
+```bash
+node scripts/compile-directory-knowledge.mjs
+```
+
+提交前可以检查编译产物是否为最新版本：
+
+```bash
+node scripts/compile-directory-knowledge.mjs --check
+```
+
+编译器会校验数据结构、重复名称、HTTP(S) URL、社团数量、星级与 QQ 格式，并生成 `functions/directory-knowledge.generated.js`。它不会联网，也不会同步上游社团资料。
 
 ---
 
@@ -315,15 +381,17 @@ main
 - LocalStorage
 - SVG
 - Responsive Design
+- Cloudflare Pages Functions（可选，用于 AI 助手）
+- OpenAI-compatible function/tool calling（AI 助手需要）
 
-无需：
+导航页面无需：
 
 - Node.js
 - npm
 - Vue
 - React
 - 数据库
-- 后端服务器
+- 常驻后端服务器
 
 ---
 
