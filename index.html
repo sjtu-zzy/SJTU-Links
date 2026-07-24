@@ -206,6 +206,11 @@
     }
     .chip:hover{border-color:var(--accent);color:var(--accent-strong);}
     .chip.active{ background:var(--active-bg);border-color:var(--accent); color:var(--accent-strong);font-weight:650; }
+    .club-source-note{
+      max-width:1120px;margin:12px auto 0;padding:0 16px;text-align:center;
+      color:var(--sub);font-size:.75rem;line-height:1.6;
+    }
+    .club-source-note[hidden]{display:none;}
     main{max-width:1120px;margin:0 auto;padding:25px 16px 40px;}
     .result-meta{
       min-height:31px;
@@ -246,8 +251,19 @@
       background:var(--badge-bg);color:var(--badge-ink);white-space:nowrap;
     }
     .badge.wechat{background:var(--badge-wechat-bg);color:var(--green);}
+    .badge.club{background:var(--active-bg);color:var(--accent-strong);}
     .card .cat{font-size:.74rem;color:var(--accent-strong);opacity:.92;}
     .card .desc{font-size:.78rem;color:var(--sub);line-height:1.5;}
+    .club-card{min-height:185px;}
+    .club-rating{font-size:.78rem;color:var(--sjtu-gold);letter-spacing:1px;line-height:1.4;}
+    .club-rating.unrated{color:var(--sub);letter-spacing:0;}
+    .club-actions{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:4px;}
+    .club-action{min-height:30px;display:inline-flex;align-items:center;gap:5px;padding:6px 9px;border-radius:4px;font-size:.72rem;font-weight:600;white-space:nowrap;}
+    .club-action svg{width:13px;height:13px;flex:0 0 13px;}
+    .club-action.website{border:1px solid var(--accent);background:var(--active-bg);color:var(--accent-strong);text-decoration:none;}
+    .club-action.website:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
+    .club-actions .copy-btn{margin-top:0;}
+    .club-note{width:100%;color:var(--sub);font-size:.7rem;line-height:1.4;}
     .card .link-hint{ display:flex;align-items:center;gap:5px; font-size:.72rem;color:#8a8e94;margin-top:auto;padding-top:4px; }
     .card .link-hint svg{width:13px;height:13px;}
     .copy-btn{
@@ -258,6 +274,9 @@
     .copy-btn svg{width:14px;height:14px;}
     .copy-btn:hover{filter:brightness(1.07);}
     .empty{text-align:center;color:var(--sub);padding:60px 20px;font-size:.95rem;}
+    .load-more-hint{text-align:center;color:var(--sub);font-size:.78rem;line-height:1.5;padding:22px 16px 4px;}
+    .load-more-hint[hidden]{display:none;}
+    .load-more-sentinel{height:1px;width:100%;}
     .data-error{
       max-width:860px;margin:18px auto 0;padding:12px 16px; border:1px solid #d9a8b3;border-radius:6px;
       background:#fff0f3;color:var(--sjtu-red-dark); text-align:center;font-size:.86rem;
@@ -358,6 +377,8 @@
       main{padding-top:18px;}
       .grid{grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;}
       .card{min-height:146px;padding:12px 13px;}
+      .club-card{min-height:190px;}
+      .club-action{padding-left:7px;padding-right:7px;font-size:.68rem;}
       .pagination-container { gap: 4px; }
       .page-btn { min-width: 28px; height: 28px; }
       .page-input { width: 40px; height: 28px; font-size: 0.8rem; }
@@ -495,7 +516,8 @@
       border-radius: 8px;
       font-size: 0.85rem;
       line-height: 1.5;
-      word-break: break-all;
+      word-break: normal;
+      overflow-wrap: anywhere;
     }
     .ai-msg.user {
       align-self: flex-end;
@@ -509,6 +531,62 @@
       color: var(--ink);
       border-bottom-left-radius: 2px;
       border: 1px solid var(--line);
+    }
+    .ai-msg-content > :first-child { margin-top: 0; }
+    .ai-msg-content > :last-child { margin-bottom: 0; }
+    .ai-msg-content p { margin: 0 0 0.65em; }
+    .ai-msg-content ul,
+    .ai-msg-content ol { margin: 0.25em 0 0.65em; padding-left: 1.35em; }
+    .ai-msg-content li + li { margin-top: 0.28em; }
+    .ai-msg-content strong { font-weight: 700; color: var(--ink); }
+    .ai-msg-content a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+    .ai-msg-content a:hover { color: var(--accent-strong); }
+    .ai-msg-heading { font-weight: 700; }
+    .ai-source-status {
+      margin: -2px 0 8px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid var(--line);
+      color: var(--sub);
+      font-size: 0.72rem;
+      line-height: 1.35;
+    }
+    .ai-presets {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-top: -2px;
+    }
+    .ai-presets[hidden] { display: none; }
+    .ai-preset-label {
+      color: var(--sub);
+      font-size: 0.72rem;
+      padding-left: 2px;
+    }
+    .ai-preset-list { display: flex; flex-wrap: wrap; gap: 7px; }
+    .ai-preset-btn {
+      max-width: 100%;
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      background: var(--active-bg);
+      color: var(--accent-strong);
+      padding: 6px 10px;
+      font-size: 0.76rem;
+      line-height: 1.35;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.16s ease, background-color 0.16s ease, color 0.16s ease;
+    }
+    .ai-preset-btn:hover {
+      transform: translateY(-1px);
+      background: var(--accent);
+      color: #fff;
     }
     .ai-msg.error {
       align-self: center;
@@ -622,9 +700,11 @@
   <button class="type-tab active" data-type="all" type="button">全部</button>
   <button class="type-tab" data-type="website" type="button">网站</button>
   <button class="type-tab" data-type="wechat" type="button">公众号</button>
+  <button class="type-tab" data-type="club" type="button">社团</button>
 </div>
 
 <div class="chips" id="chips" aria-label="分类筛选"></div>
+<div class="club-source-note" id="club-source-note" hidden></div>
 
 <main>
   <div class="result-meta">
@@ -635,7 +715,8 @@
   </div>
   <div class="grid" id="grid"></div>
   <div class="empty" id="empty" style="display:none;">没有找到匹配的结果</div>
-  <div class="pagination-container" id="pagination-container"></div>
+  <div class="load-more-hint" id="load-more-hint">向下滚动查看更多</div>
+  <div class="load-more-sentinel" id="load-more-sentinel" aria-hidden="true"></div>
 </main>
 
 <footer>
@@ -694,6 +775,10 @@
   </div>
   <div class="ai-messages" id="ai-messages">
     <div class="ai-msg bot" id="ai-welcome">你好！我是交我导 AI 助手，有什么可以帮你的吗？</div>
+    <div class="ai-presets" id="ai-presets">
+      <div class="ai-preset-label" id="ai-preset-label">你可以试试</div>
+      <div class="ai-preset-list" id="ai-preset-list"></div>
+    </div>
   </div>
   <div class="ai-chat-input-area">
     <input type="text" id="ai-chat-input" placeholder="输入你想问的内容...">
@@ -702,17 +787,19 @@
 </div>
 
 <script src="交我导数据.js"></script>
+<script src="交我导社团数据.js"></script>
 <script>
 // ========== 国际化字典 ==========
 const i18n = {
   zh: {
     siteTitle: '交我导',
-    subtitle: '上海交通大学网站与公众号导航',
-    searchPlaceholder: '搜索学院、部门、医院或公众号',
-    tabs: ['全部', '网站', '公众号'],
+    subtitle: '上海交通大学网站、公众号与社团导航',
+    searchPlaceholder: '搜索学院、部门、医院、公众号或社团',
+    tabs: ['全部', '网站', '公众号', '社团'],
     countAll: '共 ${count} 条结果',
     countFiltered: '${filters} · ${count} 条',
     empty: '没有找到匹配的结果',
+    emptyClub: '没有找到匹配的社团',
     footer: '网站条目均为直达链接，主要依据 <b>上海交通大学官网「院系设置」和「机构设置」</b> 校准。<br>微信公众号仅展示已核对的搜索名称，微信内搜索时请再核对认证主体。<br><b>非官方项目</b> ，链接和机构信息会调整，更新日期：<span id="updated-at">-</span>。',
     feedbackLabel: '意见反馈邮箱：',
     visitorPrefix: '总访问量',
@@ -720,6 +807,12 @@ const i18n = {
     toastCopied: '已复制：${name}',
     directLink: '直达官网',
     copyName: '复制名称',
+    clubWebsite: '访问官网',
+    clubWechat: '复制公众号',
+    clubQQ: '复制 QQ ${number}',
+    clubQQNote: 'QQ群信息可能过时：${note}',
+    clubUnrated: '其他社团',
+    clubSourceNote: '社团星级截至 ${ratingDate}；联系方式截至 ${contactDate}。QQ群信息可能过时。',
     dataError: '未加载到数据，请确认「交我导数据.js」与 HTML 在同一文件夹。',
     themeAuto: '跟随系统',
     themeLight: '浅色',
@@ -729,14 +822,26 @@ const i18n = {
     nextPage: '下一页',
     lastPage: '末页',
     pageSizeLabel: '每页显示',
+    loadMoreHint: '向下滚动查看更多',
     aiTitle: '交我导 AI 助手 · AI 可能犯错 注意核实',
     aiWelcome: '你好！我是交我导 AI 助手导导，有什么可以帮你的吗？',
     aiInputPlaceholder: '输入你想问的内容...',
     aiSend: '发送',
     aiThinking: '正在思考中...',
+    aiReadSources: '已读取 ${count} 篇资料',
+    aiPresetLabel: '你可以试试',
+    aiPresetQuestions: [
+      '有哪些好玩的社团',
+      '选课系统在哪里？',
+      '怎么登录 jAccount？',
+      '图书馆官网是什么？',
+      '学校有哪些学院？',
+      '国学社怎么联系？'
+    ],
     petDialogues: [
       '啾~ 迷路了吗？', '试试搜索功能吧！', '交大网站都在这里！',
-      '点击卡片直达官网~', '啾啾！需要帮助吗？', '我可以帮你找公众号！',
+      '点击卡片直达官网~', '啾啾！需要帮助吗？', '我可以帮你找公众号和社团！',
+      '社团也可以搜到哦！',
       '你好呀~ 👋', '导导为你导航！', '搜一下试试看~', '这里很全哦！',
       '啾~找到你要的了吗？', '累了就摸摸我吧~'
     ],
@@ -747,12 +852,13 @@ const i18n = {
   },
   en: {
     siteTitle: 'SJTU Links',
-    subtitle: 'SJTU Website & WeChat Navigation',
-    searchPlaceholder: 'Search schools, departments, hospitals or accounts',
-    tabs: ['All', 'Website', 'WeChat'],
+    subtitle: 'SJTU Website, WeChat & Club Navigation',
+    searchPlaceholder: 'Search schools, departments, hospitals, accounts or clubs',
+    tabs: ['All', 'Website', 'WeChat', 'Clubs'],
     countAll: '${count} results',
     countFiltered: '${filters} · ${count} results',
     empty: 'No matching results found',
+    emptyClub: 'No matching clubs found',
     footer: 'Website entries are direct links, primarily based on <b>SJTU official "Schools & Departments" and "Administrative Units"</b>.<br>WeChat accounts show verified search names only; please re‑check the certified account when searching in WeChat.<br><b>Unofficial project</b>. Links and organization info may change. Last updated: <span id="updated-at">-</span>.',
     feedbackLabel: 'Feedback email: ',
     visitorPrefix: 'Total visits',
@@ -760,6 +866,12 @@ const i18n = {
     toastCopied: 'Copied: ${name}',
     directLink: 'Official Site',
     copyName: 'Copy Name',
+    clubWebsite: 'Club Website',
+    clubWechat: 'Copy WeChat',
+    clubQQ: 'Copy QQ ${number}',
+    clubQQNote: 'QQ information may be outdated: ${note}',
+    clubUnrated: 'Other Clubs',
+    clubSourceNote: 'Club ratings as of ${ratingDate}; contact details as of ${contactDate}. QQ information may be outdated.',
     dataError: 'Data not loaded. Please make sure "交我导数据.js" is in the same folder as the HTML file.',
     themeAuto: 'Auto',
     themeLight: 'Light',
@@ -769,14 +881,26 @@ const i18n = {
     nextPage: 'Next',
     lastPage: 'Last',
     pageSizeLabel: 'Per page',
+    loadMoreHint: 'Scroll down to load more',
     aiTitle: 'SJTU AI Assistant · Be sure to verify that AI can make mistakes',
     aiWelcome: 'Hello! I am the SJTU AI Assistant, Daodao. How can I help you?',
     aiInputPlaceholder: 'Type your question...',
     aiSend: 'Send',
     aiThinking: 'Thinking...',
+    aiReadSources: 'Read ${count} directory records',
+    aiPresetLabel: 'Try asking',
+    aiPresetQuestions: [
+      'What are some fun clubs?',
+      'Where is the course registration system?',
+      'How do I sign in to jAccount?',
+      'What is the library website?',
+      'What schools and colleges are listed?',
+      'How can I contact the Chinese Classics Club?'
+    ],
     petDialogues: [
       'Chirp~ Lost?', 'Try the search!', 'All SJTU sites here!',
-      'Click cards for official sites~', 'Chirp chirp! Need help?', 'I can find WeChat accounts!',
+      'Click cards for official sites~', 'Chirp chirp! Need help?', 'I can find WeChat accounts and clubs!',
+      'You can search clubs too!',
       'Hello there~ 👋', 'DaoDao guides you!', 'Give it a search~', 'Pretty complete here!',
       'Chirp~ found what you need?', 'Tired? Just pet me~'
     ],
@@ -817,10 +941,11 @@ function applyLanguage(lang) {
   document.getElementById('subtitle').textContent = t('subtitle');
   document.getElementById('search').placeholder = t('searchPlaceholder');
   document.querySelectorAll('.type-tab').forEach((tab, i) => {
-    if (i < 3) tab.textContent = t('tabs')[i];
+    if (i < t('tabs').length) tab.textContent = t('tabs')[i];
   });
   document.getElementById('data-error').textContent = t('dataError');
   document.getElementById('empty').textContent = t('empty');
+  document.getElementById('load-more-hint').textContent = t('loadMoreHint');
   document.getElementById('footer-text').innerHTML = t('footer');
   document.getElementById('feedback-label').textContent = t('feedbackLabel');
   document.getElementById('visitor-prefix').textContent = t('visitorPrefix');
@@ -838,11 +963,11 @@ function applyLanguage(lang) {
   if (updatedAtEl) {
     updatedAtEl.textContent = window.JIAOWODAO_META?.updatedAt || "未标注";
   }
+  updateClubSourceNote();
   currentPage = 1;
   renderChips();
   renderGrid();
   updateCountDisplay();
-  renderPagination();
 }
 
 langSelect.addEventListener('change', (e) => applyLanguage(e.target.value));
@@ -861,9 +986,13 @@ themeSelect.addEventListener('change', (e) => {
 let currentPage = 1;
 let pageSize = 10;
 const pageSizeOptions = [10, 20, 50, 100];
+let visibleCount = 0;
+let loadMoreObserver;
 
 // ====== 数据与渲染 ======
-const items = Array.isArray(window.JIAOWODAO_DATA) ? window.JIAOWODAO_DATA : [];
+const baseItems = Array.isArray(window.JIAOWODAO_DATA) ? window.JIAOWODAO_DATA : [];
+const clubItems = Array.isArray(window.JIAOWODAO_CLUB_DATA) ? window.JIAOWODAO_CLUB_DATA : [];
+const items = [...baseItems, ...clubItems];
 const chipsEl = document.getElementById("chips");
 const gridEl = document.getElementById("grid");
 const emptyEl = document.getElementById("empty");
@@ -874,6 +1003,9 @@ const searchInput = document.getElementById("search");
 const clearSearchButton = document.getElementById("clear-search");
 const resetFiltersButton = document.getElementById("reset-filters");
 const paginationContainer = document.getElementById("pagination-container");
+const loadMoreHintEl = document.getElementById("load-more-hint");
+const loadMoreSentinelEl = document.getElementById("load-more-sentinel");
+const clubSourceNoteEl = document.getElementById("club-source-note");
 let activeCat = "全部";
 let activeType = "all";
 let query = "";
@@ -912,12 +1044,44 @@ function getItemName(item) {
   return item.name;
 }
 function getItemCat(item) {
+  if (item.type === 'club' && item.cat === '未获评星级') {
+    return currentLang === 'en' ? 'Other Clubs' : '其他社团';
+  }
   if (currentLang === 'en' && item.cat_en) return item.cat_en;
   return item.cat;
 }
 function getItemDesc(item) {
   if (currentLang === 'en' && item.desc_en) return item.desc_en;
   return item.desc || '';
+}
+function getVisibleQQNote(item) {
+  return item.qqNote && item.qqNote !== '关注公众号可见' ? item.qqNote : '';
+}
+
+function getItemSearchText(item) {
+  return [
+    getItemName(item),
+    getItemCat(item),
+    getItemDesc(item),
+    item.wechatName,
+    Array.isArray(item.qqGroups) ? item.qqGroups.join(' ') : '',
+    getVisibleQQNote(item)
+  ].filter(Boolean).join(' ').toLowerCase();
+}
+
+function updateClubSourceNote() {
+  if (!clubSourceNoteEl) return;
+  if (activeType !== 'club') {
+    clubSourceNoteEl.hidden = true;
+    clubSourceNoteEl.textContent = '';
+    return;
+  }
+  const meta = window.JIAOWODAO_CLUB_META || {};
+  clubSourceNoteEl.textContent = t('clubSourceNote', {
+    ratingDate: meta.ratingUpdatedAt || '未标注',
+    contactDate: meta.contactUpdatedAt || '未标注'
+  });
+  clubSourceNoteEl.hidden = false;
 }
 
 function getVisibleCats() {
@@ -929,7 +1093,7 @@ function getVisibleCats() {
       label = currentLang === 'en' ? 'All' : '全部';
     } else {
       const sampleItem = relevantItems.find(i => i.cat === catKey);
-      label = (currentLang === 'en' && sampleItem?.cat_en) ? sampleItem.cat_en : catKey;
+      label = sampleItem ? getItemCat(sampleItem) : catKey;
     }
     return { key: catKey, label: label };
   });
@@ -944,10 +1108,10 @@ function renderChips() {
     btn.textContent = cat.label;
     btn.addEventListener("click", () => {
       activeCat = cat.key;
+      visibleCount = 0;
       currentPage = 1;
       renderChips();
       renderGrid();
-      renderPagination();
     });
     chipsEl.appendChild(btn);
   });
@@ -963,28 +1127,29 @@ document.querySelectorAll(".type-tab").forEach(tab => {
     tab.setAttribute("aria-selected", "true");
     activeType = tab.dataset.type;
     if (!getVisibleCats().some(cat => cat.key === activeCat)) activeCat = "全部";
+    visibleCount = 0;
     currentPage = 1;
+    updateClubSourceNote();
     renderChips();
     renderGrid();
-    renderPagination();
   });
 });
 
 searchInput.addEventListener("input", () => {
   query = searchInput.value.trim().toLowerCase();
   clearSearchButton.hidden = !query;
+  visibleCount = 0;
   currentPage = 1;
   renderGrid();
-  renderPagination();
 });
 clearSearchButton.addEventListener("click", () => {
   searchInput.value = "";
   query = "";
   clearSearchButton.hidden = true;
   searchInput.focus();
+  visibleCount = 0;
   currentPage = 1;
   renderGrid();
-  renderPagination();
 });
 resetFiltersButton.addEventListener("click", () => {
   activeCat = "全部";
@@ -996,44 +1161,76 @@ resetFiltersButton.addEventListener("click", () => {
     t.classList.toggle("active", t.dataset.type === "all");
     t.setAttribute("aria-selected", String(t.dataset.type === "all"));
   });
+  visibleCount = 0;
   currentPage = 1;
+  updateClubSourceNote();
   renderChips();
   renderGrid();
-  renderPagination();
 });
 
 function getFilteredItems() {
   return items.filter(item => {
     if (activeType !== "all" && item.type !== activeType) return false;
     if (activeCat !== "全部" && item.cat !== activeCat) return false;
-    const name = getItemName(item).toLowerCase();
-    const cat = getItemCat(item).toLowerCase();
-    const desc = getItemDesc(item).toLowerCase();
-    if (query && !(name + " " + cat + " " + desc).includes(query)) return false;
+    if (query && !getItemSearchText(item).includes(query)) return false;
     return true;
   });
 }
 
 function updateCountDisplay() {
   const filtered = getFilteredItems();
-  const typeLabel = activeType === "website" ? t('tabs')[1] : activeType === "wechat" ? t('tabs')[2] : "";
-  const catLabel = activeCat === "全部" ? "" : (currentLang === 'en' ? (items.find(i => i.cat === activeCat)?.cat_en || activeCat) : activeCat);
+  const typeIndex = { website: 1, wechat: 2, club: 3 }[activeType];
+  const typeLabel = typeIndex ? t('tabs')[typeIndex] : "";
+  const activeCatItem = items.find(i => i.cat === activeCat);
+  const catLabel = activeCat === "全部" ? "" : (activeCatItem ? getItemCat(activeCatItem) : activeCat);
   const stateLabels = [typeLabel, catLabel, query ? `"${query}"` : ""].filter(Boolean);
   countEl.textContent = stateLabels.length ? t('countFiltered', { filters: stateLabels.join(" · "), count: filtered.length }) : t('countAll', { count: filtered.length });
   resetFiltersButton.hidden = stateLabels.length === 0;
+  emptyEl.textContent = activeType === 'club' ? t('emptyClub') : t('empty');
   emptyEl.style.display = filtered.length ? "none" : "block";
+}
+
+function getGridColumnCount() {
+  const columns = getComputedStyle(gridEl).gridTemplateColumns.split(/\s+/).filter(Boolean).length;
+  return Math.max(columns, 1);
+}
+
+function getLoadBatchSize() {
+  return getGridColumnCount() * 5;
+}
+
+function updateLoadMoreState(totalCount) {
+  loadMoreHintEl.hidden = visibleCount >= totalCount;
+}
+
+function loadMoreItems() {
+  const filtered = getFilteredItems();
+  if (visibleCount >= filtered.length) return;
+  visibleCount += getLoadBatchSize();
+  renderGrid();
 }
 
 function renderGrid() {
   gridEl.innerHTML = "";
   const filtered = getFilteredItems();
-  if (query) {
+  if (query || activeType === 'club') {
     filtered.sort((a, b) => {
+      if (activeType === 'club') {
+        const websiteOrder = Number(Boolean(b.websiteUrl)) - Number(Boolean(a.websiteUrl));
+        if (websiteOrder) return websiteOrder;
+      }
+      if (!query) return 0;
       const score = item => {
         const n = getItemName(item).toLowerCase();
-        if (n.startsWith(query)) return 3;
-        if (n.includes(query)) return 2;
-        if (getItemCat(item).toLowerCase().includes(query)) return 1;
+        const wechat = (item.wechatName || '').toLowerCase();
+        const qq = Array.isArray(item.qqGroups) ? item.qqGroups.join(' ').toLowerCase() : '';
+        const cat = getItemCat(item).toLowerCase();
+        if (n === query) return 6;
+        if (n.startsWith(query)) return 5;
+        if (n.includes(query)) return 4;
+        if (wechat.includes(query)) return 3;
+        if (qq.includes(query)) return 2;
+        if (cat.includes(query) || getItemDesc(item).toLowerCase().includes(query)) return 1;
         return 0;
       };
       return score(b) - score(a);
@@ -1041,14 +1238,13 @@ function renderGrid() {
   }
   updateCountDisplay();
 
-  const totalPages = Math.ceil(filtered.length / pageSize);
-  if (currentPage > totalPages) currentPage = totalPages || 1;
-  const start = (currentPage - 1) * pageSize;
-  const pageItems = filtered.slice(start, start + pageSize);
+  if (!visibleCount) visibleCount = getLoadBatchSize();
+  const pageItems = filtered.slice(0, visibleCount);
+  updateLoadMoreState(filtered.length);
 
   pageItems.forEach(item => {
     const card = document.createElement(item.type === "website" ? "a" : "article");
-    card.className = "card";
+    card.className = "card" + (item.type === "club" ? " club-card" : "");
     if (item.type === "website") {
       card.href = item.url;
       card.target = "_blank";
@@ -1060,14 +1256,20 @@ function renderGrid() {
     nameDiv.className = "name";
     nameDiv.textContent = getItemName(item);
     const badge = document.createElement("div");
-    badge.className = "badge" + (item.type === "wechat" ? " wechat" : "");
-    badge.textContent = item.type === "wechat" ? t('tabs')[2] : t('tabs')[1];
+    badge.className = "badge" + (item.type === "wechat" ? " wechat" : item.type === "club" ? " club" : "");
+    badge.textContent = item.type === "wechat" ? t('tabs')[2] : item.type === "club" ? t('tabs')[3] : t('tabs')[1];
     top.append(nameDiv, badge);
     card.appendChild(top);
     const catDiv = document.createElement("div");
     catDiv.className = "cat";
     catDiv.textContent = getItemCat(item);
     card.appendChild(catDiv);
+    if (item.type === "club") {
+      const ratingDiv = document.createElement("div");
+      ratingDiv.className = "club-rating" + (item.rating ? "" : " unrated");
+      ratingDiv.textContent = item.rating ? "★".repeat(item.rating) : t('clubUnrated');
+      card.appendChild(ratingDiv);
+    }
     const descText = getItemDesc(item);
     if (descText) {
       const descDiv = document.createElement("div");
@@ -1080,13 +1282,51 @@ function renderGrid() {
       hint.className = "link-hint";
       hint.innerHTML = `<span>${t('directLink')}</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 5h5v5M19 5l-9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`;
       card.appendChild(hint);
-    } else {
+    } else if (item.type === "wechat") {
       const copyBtn = document.createElement("button");
       copyBtn.type = "button";
       copyBtn.className = "copy-btn";
       copyBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg><span>${t('copyName')}</span>`;
       copyBtn.addEventListener("click", () => copyName(item.name));
       card.appendChild(copyBtn);
+    } else if (item.type === "club") {
+      const actions = document.createElement("div");
+      actions.className = "club-actions";
+      if (item.websiteUrl) {
+        const websiteLink = document.createElement("a");
+        websiteLink.className = "club-action website";
+        websiteLink.href = item.websiteUrl;
+        websiteLink.target = "_blank";
+        websiteLink.rel = "noopener noreferrer";
+        websiteLink.innerHTML = `<span>${t('clubWebsite')}</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 5h5v5M19 5l-9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`;
+        actions.appendChild(websiteLink);
+      }
+      if (item.wechatName) {
+        const wechatButton = document.createElement("button");
+        wechatButton.type = "button";
+        wechatButton.className = "copy-btn club-action";
+        wechatButton.textContent = t('clubWechat');
+        wechatButton.addEventListener("click", () => copyName(item.wechatName));
+        actions.appendChild(wechatButton);
+      }
+      if (Array.isArray(item.qqGroups)) {
+        item.qqGroups.forEach(group => {
+          const qqButton = document.createElement("button");
+          qqButton.type = "button";
+          qqButton.className = "copy-btn club-action";
+          qqButton.textContent = t('clubQQ', { number: group });
+          qqButton.addEventListener("click", () => copyName(group));
+          actions.appendChild(qqButton);
+        });
+      }
+      const visibleQQNote = getVisibleQQNote(item);
+      if (visibleQQNote) {
+        const note = document.createElement("span");
+        note.className = "club-note";
+        note.textContent = t('clubQQNote', { note: visibleQQNote });
+        actions.appendChild(note);
+      }
+      if (actions.children.length) card.appendChild(actions);
     }
     gridEl.appendChild(card);
   });
@@ -1223,9 +1463,21 @@ function renderPagination() {
 document.querySelector('.type-tab[data-type="all"]').setAttribute("aria-selected", "true");
 updateThemeOptions();
 applyLanguage(currentLang);
+
 renderChips();
+if (loadMoreSentinelEl) {
+  if ('IntersectionObserver' in window) {
+    loadMoreObserver = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) loadMoreItems();
+    }, { rootMargin: '0px 0px 120px 0px' });
+    loadMoreObserver.observe(loadMoreSentinelEl);
+  } else {
+    window.addEventListener('scroll', () => {
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 120) loadMoreItems();
+    }, { passive: true });
+  }
+}
 renderGrid();
-renderPagination();
 
 // ========== 小宠物逻辑 ==========
 (function() {
@@ -1581,7 +1833,16 @@ renderPagination();
   const inputEl = document.getElementById('ai-chat-input');
   const messagesEl = document.getElementById('ai-messages');
 
-  let chatHistory = []; // 用于保存上下文记忆
+  const presetsEl = document.getElementById('ai-presets');
+  const presetLabelEl = document.getElementById('ai-preset-label');
+  const presetListEl = document.getElementById('ai-preset-list');
+  const languageSelectEl = document.getElementById('lang-select');
+  let chatHistory = [];
+  let presetQuestionsVisible = true;
+  const presetQuestionIndexes = choosePresetQuestionIndexes();
+
+  renderPresetQuestions();
+  languageSelectEl?.addEventListener('change', renderPresetQuestions);
 
   // 切换窗口显示隐藏
   triggerBtn.addEventListener('click', () => {
@@ -1594,23 +1855,20 @@ renderPagination();
     triggerBtn.style.display = 'flex';
   });
 
-  // 发送消息
   async function handleSend() {
     const query = inputEl.value.trim();
     if (!query) return;
 
-    // 1. 用户气泡展示
+    hidePresetQuestions();
     appendMessage(query, 'user');
     inputEl.value = '';
     inputEl.disabled = true;
     sendBtn.disabled = true;
 
-    // 2. Loading 占位
     const loadingId = 'ai-loading-' + Date.now();
     appendMessage(t('aiThinking'), 'bot', loadingId);
 
     try {
-      // 3. Cloudflare Pages Functions 将 functions/chat.js 映射为 /chat
       const response = await fetch('/chat', {
         method: 'POST',
         headers: {
@@ -1631,16 +1889,14 @@ renderPagination();
         throw new Error('AI 服务返回了无法解析的响应');
       }
       
-      // 移除 Loading 气泡
       document.getElementById(loadingId)?.remove();
 
       if (response.ok && data.choices && data.choices[0]) {
         const reply = data.choices[0].message.content;
-        appendMessage(reply, 'bot');
-        // 将此轮对话加入上下文记忆
+        const grepResults = Number(data.jiaowodao_agent?.grepResults) || 0;
+        appendMessage(reply, 'bot', '', { grepResults });
         chatHistory.push({ role: 'user', content: query });
         chatHistory.push({ role: 'assistant', content: reply });
-        // 限制历史记录上限，防止上下文请求体过大
         if (chatHistory.length > 10) chatHistory.splice(0, 2);
       } else {
         console.error('AI chat request failed', { status: response.status, body: data });
@@ -1657,13 +1913,166 @@ renderPagination();
     }
   }
 
-  function appendMessage(text, type, id = '') {
+  function renderPresetQuestions() {
+    if (!presetsEl || !presetListEl || !presetQuestionsVisible) return;
+    const questions = i18n[currentLang]?.aiPresetQuestions || i18n.zh.aiPresetQuestions;
+    presetLabelEl.textContent = t('aiPresetLabel');
+    presetListEl.innerHTML = '';
+    presetQuestionIndexes.forEach((index) => {
+      const question = questions[index];
+      if (!question) return;
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'ai-preset-btn';
+      button.textContent = question;
+      button.addEventListener('click', () => {
+        if (inputEl.disabled) return;
+        inputEl.value = question;
+        handleSend();
+      });
+      presetListEl.appendChild(button);
+    });
+    presetsEl.hidden = false;
+  }
+
+  function hidePresetQuestions() {
+    presetQuestionsVisible = false;
+    if (presetsEl) presetsEl.hidden = true;
+  }
+
+  function choosePresetQuestionIndexes() {
+    const indexes = [1, 2, 3, 4, 5];
+    for (let index = indexes.length - 1; index > 0; index -= 1) {
+      const swapIndex = Math.floor(Math.random() * (index + 1));
+      [indexes[index], indexes[swapIndex]] = [indexes[swapIndex], indexes[index]];
+    }
+    return [0, indexes[0], indexes[1]].sort(() => Math.random() - 0.5);
+  }
+
+  function appendMessage(text, type, id = '', options = {}) {
     const msg = document.createElement('div');
     msg.className = `ai-msg ${type}`;
     if (id) msg.id = id;
-    msg.textContent = text;
+
+    if (type === 'bot') {
+      const grepResults = Number(options.grepResults) || 0;
+      if (grepResults > 0) {
+        const sourceStatus = document.createElement('div');
+        sourceStatus.className = 'ai-source-status';
+        sourceStatus.textContent = t('aiReadSources', { count: grepResults });
+        msg.appendChild(sourceStatus);
+      }
+      const content = document.createElement('div');
+      content.className = 'ai-msg-content';
+      renderRichMessage(content, text);
+      msg.appendChild(content);
+    } else {
+      msg.textContent = text;
+    }
     messagesEl.appendChild(msg);
-    messagesEl.scrollTop = messagesEl.scrollHeight; // 滚动至底部
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function renderRichMessage(container, text) {
+    const lines = String(text || '').replace(/\r\n?/g, '\n').split('\n');
+    let paragraphLines = [];
+    let activeList = null;
+
+    const flushParagraph = () => {
+      if (!paragraphLines.length) return;
+      const paragraph = document.createElement('p');
+      paragraphLines.forEach((line, index) => {
+        if (index > 0) paragraph.appendChild(document.createElement('br'));
+        appendInlineMarkdown(paragraph, line);
+      });
+      container.appendChild(paragraph);
+      paragraphLines = [];
+    };
+
+    lines.forEach((line) => {
+      const unordered = line.match(/^\s*[-*•]\s+(.+)$/);
+      const ordered = line.match(/^\s*\d+[.)、]\s+(.+)$/);
+      const listMatch = unordered || ordered;
+
+      if (listMatch) {
+        flushParagraph();
+        const listTag = unordered ? 'ul' : 'ol';
+        if (!activeList || activeList.tagName.toLowerCase() !== listTag) {
+          activeList = document.createElement(listTag);
+          container.appendChild(activeList);
+        }
+        const listItem = document.createElement('li');
+        appendInlineMarkdown(listItem, listMatch[1]);
+        activeList.appendChild(listItem);
+        return;
+      }
+
+      activeList = null;
+      if (!line.trim()) {
+        flushParagraph();
+        return;
+      }
+
+      const heading = line.match(/^\s*#{1,3}\s+(.+)$/);
+      if (heading) {
+        flushParagraph();
+        const headingParagraph = document.createElement('p');
+        headingParagraph.className = 'ai-msg-heading';
+        appendInlineMarkdown(headingParagraph, heading[1]);
+        container.appendChild(headingParagraph);
+        return;
+      }
+
+      paragraphLines.push(line);
+    });
+
+    flushParagraph();
+    if (!container.childNodes.length) appendInlineMarkdown(container, String(text || ''));
+  }
+
+  function appendInlineMarkdown(parent, text) {
+    const pattern = /<(https?:\/\/[A-Za-z0-9._~:/?\[\]@!$&'()*+,;=%-]+)>|\[([^\]]+)\]\((https?:\/\/[A-Za-z0-9._~:/?\[\]@!$&'()*+,;=%-]+)\)|\*\*([^*\n]+)\*\*|(https?:\/\/[A-Za-z0-9._~:/?\[\]@!$&'()*+,;=%-]+)/g;
+    let cursor = 0;
+    let match;
+
+    while ((match = pattern.exec(text)) !== null) {
+      if (match.index > cursor) parent.appendChild(document.createTextNode(text.slice(cursor, match.index)));
+      if (match[1]) {
+        parent.appendChild(createSafeLink(match[1], match[1]));
+      } else if (match[2] && match[3]) {
+        parent.appendChild(createSafeLink(match[3], match[2]));
+      } else if (match[4]) {
+        const strong = document.createElement('strong');
+        appendInlineMarkdown(strong, match[4]);
+        parent.appendChild(strong);
+      } else {
+        const [url, trailing] = splitUrlTrailingPunctuation(match[5]);
+        parent.appendChild(createSafeLink(url, url));
+        if (trailing) parent.appendChild(document.createTextNode(trailing));
+      }
+      cursor = match.index + match[0].length;
+    }
+
+    if (cursor < text.length) parent.appendChild(document.createTextNode(text.slice(cursor)));
+  }
+
+  function createSafeLink(href, label) {
+    const link = document.createElement('a');
+    link.href = href;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = label;
+    return link;
+  }
+
+  function splitUrlTrailingPunctuation(url) {
+    let cleanUrl = url;
+    let trailing = '';
+    while (/[)>\]}),.;:!?，。；：！？、）】》」』]$/.test(cleanUrl)) {
+      trailing = cleanUrl.slice(-1) + trailing;
+      cleanUrl = cleanUrl.slice(0, -1);
+    }
+    return [cleanUrl, trailing];
   }
 
   sendBtn.addEventListener('click', handleSend);
